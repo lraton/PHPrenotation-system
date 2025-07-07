@@ -15,6 +15,7 @@
 ---
 
 ## 📂 Current File Structure
+```
 /phprenotation-system/
 ├── index.php # Main monolithic entry point
 ├── selezione.php # Second monolithic
@@ -30,8 +31,8 @@
 │   └── img/ # Image assets
 ├── controllers/
 ├── includes/
-├── views/
-└── (JS/analytics/iubenda scripts embedded in HTML)
+└── views/
+```
 
 ---
 
