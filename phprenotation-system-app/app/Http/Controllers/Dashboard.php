@@ -27,11 +27,11 @@ class Dashboard extends Controller
     {
         $prenotazioni = DB::table('prenotazione')
             ->join('giornata', 'prenotazione.id_giornata', '=', 'giornata.id_giornata')
-            ->select('prenotazione.*', 'giornata.data', 'giornata.orario')
+            ->select('prenotazione.*', 'giornata.data', 'giornata.orario', 'prenotazione.id_prenotazione', 'prenotazione.numero', 'prenotazione.posti_prenotati')
             ->orderBy('giornata.data', 'desc')
             ->get();
 
-        return view('dashboard', ['prenotazioni' => $prenotazioni]);
+        return view('dashboard', ['prenotazioni' => $prenotazioni, 'username' => $request->session()->get('username')]);
     }
 
     public function addGiornata(Request $request)
@@ -135,6 +135,30 @@ class Dashboard extends Controller
             return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione di tutte le prenotazioni.']);
         }
         return redirect()->back()->with('success', 'Tutte le prenotazioni sono state rimosse con successo!');
+    }
+
+    public function removePrenotazione(Request $request)
+    {
+        $prenotazioni = $request->input('prenotazioni');
+
+        if (!$prenotazioni || !is_array($prenotazioni)) {
+            return redirect()->back()->withErrors(['message' => 'Seleziona almeno una prenotazione da rimuovere.']);
+        }
+
+        try {
+            foreach ($prenotazioni as $id_prenotazione) {
+                $prenotazione = DB::table('prenotazione')->where('id_prenotazione', $id_prenotazione)->first();
+
+                if ($prenotazione) {
+                    DB::table('prenotazione')->where('id_prenotazione', $id_prenotazione)->delete();
+                    DB::table('giornata')->where('id_giornata', $prenotazione->id_giornata)->update(['posti_liberi' => 1]);
+                }
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione delle prenotazioni selezionate.']);
+        }
+
+        return redirect()->back()->with('success', 'Prenotazioni selezionate rimosse con successo!');
     }
 
     public function removeAll(Request $request)

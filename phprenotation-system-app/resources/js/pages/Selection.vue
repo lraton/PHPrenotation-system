@@ -1,4 +1,19 @@
 <template>
+    <div v-if="$page.props.flash.success" class="alert-success">
+        {{ $page.props.flash.success }}
+    </div>
+
+    <div v-if="$page.props.flash.error" class="alert-error">
+        {{ $page.props.flash.error }}
+    </div>
+    
+    <div v-if="Object.keys($page.props.errors).length > 0" class="alert-error">
+        <ul>
+            <li v-for="(error, index) in $page.props.errors" :key="index">
+                {{ error[0] }}
+            </li>
+        </ul>
+    </div>
     <div class="main-wrapper">
 
         <form @submit.prevent="submit">
@@ -17,9 +32,6 @@
                 <label for="telefono">Telefono:</label>
                 <input type="tel" v-model="form.telefono" id="telefono" 
                        pattern="[0-9]{10}" placeholder="3331234567" required>
-
-                <label for="data">Data:</label>
-                <input type="text" :value="dataScelta" id="data" style="font-weight:bold;" readonly>
 
                 <label for="orario">Scegli un orario:</label>
                 <select v-model="form.orario" id="orario" required>

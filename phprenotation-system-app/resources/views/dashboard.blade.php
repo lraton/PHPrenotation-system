@@ -1,99 +1,95 @@
 <head>
-	<title>Dashboard - Prenotazioni</title>
+	<title>Dashboard - {{ $username }}</title>
 </head>
-<div class="alerts-container" style="max-width:1200px; margin: 0 auto; padding: 0 24px;">
-    @if(session('success'))
-    <div style="padding: 15px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px; margin-top: 20px;">
-        {{ session('success') }}
-    </div>
-    @endif
-
-    @if($errors->any())
-    <div class="alert alert-danger" style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; margin-top: 20px; border-radius: 5px;">
-        <ul style="margin: 0; padding-left: 20px;">
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-</div>
 
 <div class="dashboard-layout">
     <section class="booking-list">
-        <h1>Dashboard</h1>
-        <p>Qui ci sono tutte le prenotazioni:</p>
-        <ul>
-            @foreach($prenotazioni as $prenotazione)
-                <li>{{ $prenotazione->nome }} {{ $prenotazione->cognome }} - {{ $prenotazione->email }} - {{ $prenotazione->data }} {{ $prenotazione->orario }}</li>
-            @endforeach
-        </ul>
-		<br><br>
-		<form class="prenotazione-form" method="POST" action="/rimuovi-tutte-prenotazioni">
-			@csrf
-			<button class="logout-button" type="submit">Rimuovi tutte le prenotazioni</button>
-		</form>
-		<form class="prenotazione-form" method="POST" action="/esporta-csv">
-			@csrf
-			<button class="csv-button" type="submit">Esporta in CSV</button>
-		</form>
+        <div class="list-header">
+            <h1>Ciao {{ $username }}!</h1>
+            <p>Gestisci le prenotazioni attive:</p>
+        </div>
+
+        <form method="POST" action="/rimuovi-prenotazione" id="main-booking-form">
+            @csrf
+            <ul class="scrollable-list">
+                @foreach($prenotazioni as $prenotazione)    
+                    <li>
+                        <input type="checkbox" name="prenotazioni[]" value="{{ $prenotazione->id_prenotazione }}">
+                        <div class="booking-info">
+                            <span class="badge">{{ $prenotazione->posti_prenotati }} Persone</span>
+                            <strong>{{ $prenotazione->nome }} {{ $prenotazione->cognome }}</strong>
+                            <small>{{ $prenotazione->data }} alle {{ $prenotazione->orario }}</small>
+                            <span class="contact-info">{{ $prenotazione->numero }} - {{ $prenotazione->email }}</span>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+
+            <div class="actions-footer">
+                <button class="csv-button large-btn" type="submit" formaction="/esporta-csv">
+                    📥 Esporta Selezionate in CSV
+                </button>
+                
+                <div class="danger-zone-inline">
+                    <button class="delete-btn-sm" type="submit" onclick="return confirm('Sicuro di voler cancellare le prenotazioni selezionate?')">Elimina Selezionate</button>
+                    <button class="delete-btn-sm" type="submit" formaction="/rimuovi-tutte-prenotazioni" onclick="return confirm('Sicuro di voler cancellare TUTTO?')">Svuota Lista</button>
+                </div>
+            </div>
+        </form>
     </section>
 
     <aside class="booking-form-card">
-        <div class="form-sections">
-            <p><strong>Aggiungi una nuova data:</strong></p>
-            <form class="prenotazione-form" method="POST" action="/aggiungi-giornate">
-                @csrf
-                <input type="date" name="data" required>
-                <input type="time" name="orario" required>
-                <button type="submit">Aggiungi Data</button>
-            </form>
+        <div class="admin-section">
+            <h3>📅 Gestione Date</h3>
+            
+            <details>
+                <summary>Aggiungi Singola Data</summary>
+                <form method="POST" action="/aggiungi-giornate">
+                    @csrf
+                    <input type="date" name="data" required>
+                    <input type="time" name="orario" required>
+                    <button type="submit" class="btn-sm">Aggiungi</button>
+                </form>
+            </details>
 
-            <hr style="border: 0; border-top: 1px solid #eee; margin: 24px 0;">
+            <details open>
+                <summary>Aggiungi Range Date</summary>
+                <form method="POST" action="/aggiungi-giornate">
+                    @csrf
+					<label for="datainizio">Data Inizio:</label>
+					<input type="date" name="datainizio" required>
+					<label for="datafine">Data Fine:</label>
+					<input type="date" name="datafine" required>
+                    
+					<label for="orari">Orari (aggiungi almeno uno):</label>
+                    <div id="orari-wrapper">
+                        <div class="orario-item">
+                            <input type="time" name="orari[]" required>
+                        </div>
+                    </div>
+                    <button type="button" id="btn-add-orario" class="btn-ghost">+ Orario</button>
+                    <button type="submit">Genera Range</button>
+                </form>
+            </details>
 
-            <p><strong>Aggiungi range di date:</strong></p>
-			<form class="prenotazione-form" method="POST" action="/aggiungi-giornate">
-				@csrf
-				<label>Data Inizio:</label>
-				<input type="date" name="datainizio" required>
-				
-				<label>Data Fine:</label>
-				<input type="date" name="datafine" required>
-
-				<label>Orari:</label>
-				<div id="orari-wrapper">
-					<div class="orario-item" style="display: flex; gap: 5px; margin-bottom: 8px;">
-						<input type="time" name="orari[]" required>
-					</div>
-				</div>
-				
-				<button type="button" id="btn-add-orario" style="background: #4a5568; margin-bottom: 15px; font-size: 13px; padding: 5px 10px;">
-					+ Aggiungi altro orario
-				</button>
-
-				<button type="submit">Aggiungi Range</button>
-			</form>
-			<p><strong>Rimuovi una nuova data:</strong></p>
-			<form class="prenotazione-form" method="POST" action="/rimuovi-giornate">
-				@csrf
-				<input type="date" name="data" required>
-				<input type="time" name="orario">
-				<button type="submit">Rimuovi Data</button>
-			</form>
-			<br><br>
-			<form class="prenotazione-form" method="POST" action="/rimuovi-tutte-giornate">
-				@csrf
-				<button class="logout-button" type="submit">Rimuovi tutte le date</button>
-			</form>
-			<form class="prenotazione-form" method="POST" action="/rimuovi-tutto">
-				@csrf
-				<button class="logout-button" type="submit">RIMUOVI TUTTO</button>
-			</form>
-
+            <details>
+                <summary class="text-danger">Elimina Date</summary>
+                <form method="POST" action="/rimuovi-giornate">
+                    @csrf
+                    <input type="date" name="data" required>
+                    <input type="time" name="orario">
+                    <button type="submit" class="logout-button" style="margin-top:0" onclick="return confirm('Sicuro di voler cancellare la data selezionata?')">Rimuovi</button>
+                </form>
+            </details>
         </div>
 
-        <!-- Tasto Logout -->
-        <button class="logout-button" type="button" onclick="window.location.href='/logout'">Logout</button>
+        <div class="admin-footer">
+            <button class="logout-button" type="button" onclick="window.location.href='/logout'">Esci dalla Dashboard</button>
+            <form id="reset-all-form" action="/rimuovi-tutto" method="POST">
+				@csrf
+			 <button type="submit" class="text-btn-danger" onclick="return confirm('Sicuro di voler cancellare TUTTO? Questa azione è irreversibile!')">HARD RESET (TUTTO)</button>
+			</form>
+        </div>
     </aside>
 </div>
 <script>
@@ -199,11 +195,26 @@ ul {
 }
 
 li {
-	padding: 12px 14px;
-	border: 1px solid #eef2f6;
-	border-radius: 8px;
-	margin-bottom: 10px;
-	background: #fff
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 2px solid #7e7e7e;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background: #fff;
+}
+
+li input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    cursor: pointer;
+	-ms-transform: scale(1.4); /* IE */
+	-moz-transform: scale(1.4); /* FF */
+	-webkit-transform: scale(1.4); /* Safari and Chrome */
+	-o-transform: scale(1.4); /* Opera */
+	transform: scale(1.4);
+	margin-right: 32px;
 }
 
 form {
@@ -242,11 +253,107 @@ button {
 	width: 100%;
 }
 
+/* Layout Migliorato per la lista */
+.booking-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.badge {
+    background: #edf2f7;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    width: fit-content;
+}
+
+.contact-info {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* Footer Azioni */
+.actions-footer {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.large-btn {
+    padding: 18px !important;
+    font-size: 18px !important;
+}
+
+.danger-zone-inline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.delete-btn-sm {
+    background: #feb2b2;
+    color: #9b2c2c;
+    padding: 8px;
+    font-size: 13px;
+}
+
+.delete-btn-sm:hover {
+    background: #fc8181;
+}
+
+/* Sidebar Amministrazione */
+.admin-section h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: var(--accent);
+}
+
+details {
+    background: #f8fafc;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+summary {
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+
+.btn-ghost {
+    background: #edf2f7;
+    color: #4a5568;
+    font-size: 12px;
+    padding: 5px;
+}
+
+.text-btn-danger {
+    background: transparent;
+    color: #e53e3e;
+    font-size: 11px;
+    margin-top: 15px;
+    text-decoration: underline;
+}
+
+.admin-footer {
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.text-danger { color: #e53e3e; }
+
 @media (max-width: 600px) {
 	.dashboard-layout {
 		padding: 12px;
 		flex-direction: column-reverse;
-		/* I moduli (aside) vanno sopra la lista (section) */
 		gap: 20px;
 		width: 100%;
         box-sizing: border-box;
@@ -261,18 +368,15 @@ button {
 		position: static;
 		padding: 20px;
 		order: 1;
-		/* Forza la posizione in alto */
 	}
 
 	.booking-list {
 		order: 2;
-		/* Forza la posizione in basso */
 	}
 
 	input,
 	button {
 		font-size: 16px;
-		/* Ottimo per il touch e evita zoom su iOS */
 	}
 
 	h1 {

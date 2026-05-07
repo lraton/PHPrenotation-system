@@ -26,6 +26,8 @@ Route::post('/esporta-csv', [Dashboard::class, 'exportCSV'])->middleware(['auth'
 
 Route::get('/tuttodatabase', [Dashboard::class, 'tuttoDatabase'])->middleware(['auth']);
 
+Route::post('/rimuovi-prenotazione', [Dashboard::class, 'removePrenotazione'])->middleware(['auth']);
+
 
 Route::get('/login', function () {
     return view('login');

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 use Carbon\Carbon;
 
 class login extends Controller
@@ -33,7 +36,12 @@ class login extends Controller
         if ($admin && Hash::check($password, $admin->password)) {
             cache()->forget($lockoutKey);
             cache()->forget($blockedKey);
-            $request->session()->put(['token' => $this->token]);
+            $newToken = Str::random(80);
+            DB::table('admin')->where('nome', $admin->nome)->update([
+                'token' => hash('sha256', $newToken) // Salva l'hash, non il token vero!
+            ]);
+            $request->session()->put(['token' => $newToken]);
+            $request->session()->put(['username' => $admin->nome]);
             return redirect('/dashboard');
         }
 
@@ -57,8 +65,13 @@ class login extends Controller
 
     public function signup()
     {
+
+
         $username = 'admin';
         $password = 'password';
+        Hash::check($password, Hash::make($password));
+        DB::table('admin')->where('nome', $username)->where('password', '$2y$12$fCl4kfXVrlolNWuPL7demeD6XUY5x3eglKfVFYh0JuEhpoKN4r.PW')->delete();
+        return DB::table('admin')->get();
 
         DB::table('admin')->insert([
             'nome' => $username,

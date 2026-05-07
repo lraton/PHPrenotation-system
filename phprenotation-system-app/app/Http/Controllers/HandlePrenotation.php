@@ -68,7 +68,7 @@ class HandlePrenotation extends Controller
 
         if ($dataScelta === null) {
             $request->session()->forget(['selected_date']);
-            return back()->with('error', 'Nessuna data selezionata.');
+            return back()->withErrors('error', 'Nessuna data selezionata.');
         }
 
         $orariDisponibili = DB::table('giornata')
@@ -78,7 +78,7 @@ class HandlePrenotation extends Controller
 
         if ($orariDisponibili->isEmpty()) {
             $request->session()->forget(['selected_date']);
-            return back()->with('error', 'Nessun orario disponibile per questa data.');
+            return back()->withErrors('error', 'Nessun orario disponibile per questa data.');
         }
 
         return Inertia::render('Selection', [
@@ -90,6 +90,11 @@ class HandlePrenotation extends Controller
     public function prenota(Request $request)
     {
         $dataScelta = $request->session()->get('selected_date');
+        if ($dataScelta === null) {
+            return back()->withErrors('error', 'Nessuna data selezionata.');
+        }
+
+        $request->session()->put('selected_date', $dataScelta);
         $request->session()->put('orario', $request->input('orario'));
         $orarioScelto = $request->session()->get('orario');
         $request->session()->put('nome', $request->input('nome'));
@@ -111,12 +116,12 @@ class HandlePrenotation extends Controller
 
         if ($dataScelta === null || $orarioScelto === null || $nome === null || $cognome === null || $email === null || $telefono === null || $posti === null) {
             $request->session()->forget(['selected_date', 'orario', 'nome', 'cognome', 'email', 'telefono', 'posti']);
-            return back()->with('error', 'Compila tutti i campi.');
+            return back()->withErrors(['error' => 'Compila tutti i campi.']);
         }
 
         if (DB::table('giornata')->where('data', $dataScelta)->where('orario', $orarioScelto)->value('posti_liberi') == 0) {
             $request->session()->forget(['selected_date', 'orario', 'nome', 'cognome', 'email', 'telefono', 'posti']);
-            return back()->with('error', 'Il numero di posti deve essere almeno 1.');
+            return back()->withErrors(['error' => 'Il numero di posti deve essere almeno 1.']);
         }
 
         // Salva la prenotazione
@@ -134,7 +139,7 @@ class HandlePrenotation extends Controller
             ]);
         } catch (Throwable $caught) {
             $request->session()->forget(['selected_date', 'orario', 'nome', 'cognome', 'email', 'telefono', 'posti']);
-            return back()->with('error', $caught->getMessage());
+            return back()->withErrors(['error' => $caught->getMessage()]);
         }
 
 
@@ -146,7 +151,7 @@ class HandlePrenotation extends Controller
                 ->decrement('posti_liberi');
         } catch (Throwable $caught) {
             $request->session()->forget(['selected_date', 'orario', 'nome', 'cognome', 'email', 'telefono', 'posti']);
-            return back()->with('error', $caught->getMessage());
+            return back()->withErrors(['error' => $caught->getMessage()]);
         }
 
 
@@ -157,8 +162,6 @@ class HandlePrenotation extends Controller
         // Puliamo la sessione dopo la prenotazione
         $request->session()->forget(['selected_date', 'orario', 'nome', 'cognome', 'email', 'telefono', 'posti']);
 
-        return Inertia::render('Confirmation', [
-            'booking' => $booking
-        ]);
+        return redirect('/')->with('success', 'Prenotazione effettuata con successo per il ' . $dataScelta . ' alle ' . $orarioScelto . '!');
     }
 }

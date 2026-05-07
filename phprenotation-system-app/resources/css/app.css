@@ -11,6 +11,7 @@
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
 }
+
 :root {
     --bg: #f5f7fb;
     --card: #ffffff;
@@ -22,7 +23,9 @@
     --danger: #e53e3e;
 }
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
@@ -30,8 +33,10 @@ body {
     background: var(--bg);
     color: #111;
     line-height: 1.6;
-    font-size: 16px; /* Dimensione normale, non 30px */
-    text-align: left; /* Rimosso l'allineamento centrale forzato */
+    font-size: 16px;
+    /* Dimensione normale, non 30px */
+    text-align: left;
+    /* Rimosso l'allineamento centrale forzato */
 }
 
 /* Contenitore principale per centrare il form di prenotazione */
@@ -52,13 +57,15 @@ body {
 /* Stile Card (simile alla dashboard) */
 .booking-card {
     background: var(--card);
-    padding: 32px; /* Questo stacca tutto il contenuto dai bordi della card */
+    padding: 32px;
+    /* Questo stacca tutto il contenuto dai bordi della card */
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     margin-bottom: 24px;
 }
 
-h1, h2 {
+h1,
+h2 {
     color: var(--accent);
     margin-top: 0;
     font-weight: 700;
@@ -66,24 +73,31 @@ h1, h2 {
 
 /* Tabelle di orari/date */
 table {
-    width: 95%;           /* Non occupa il 100%, lasciando respiro ai lati */
-    margin: 20px auto;    /* La centra orizzontalmente */
-    border-collapse: separate; 
-    border-spacing: 10px; /* Aggiunge spazio tra le celle stesse */
-    table-layout: fixed;  /* Forza le colonne a essere uguali */
+    width: 95%;
+    /* Non occupa il 100%, lasciando respiro ai lati */
+    margin: 20px auto;
+    /* La centra orizzontalmente */
+    border-collapse: separate;
+    border-spacing: 10px;
+    /* Aggiunge spazio tra le celle stesse */
+    table-layout: fixed;
+    /* Forza le colonne a essere uguali */
 }
 
 td {
-    background: #f8fafc;  /* Un leggero sfondo per le celle */
-    border: 10px solid #a3a5a8;
-    border-radius: 8px;   /* Arrotonda le celle come i bottoni */
+    background: #f8fafc;
+    /* Un leggero sfondo per le celle */
+    border: 2px solid #7e7e7e;
+    border-radius: 8px;
+    /* Arrotonda le celle come i bottoni */
     padding: 15px;
     text-align: center;
     transition: transform 0.2s;
 }
 
 td:hover {
-    transform: translateY(-2px); /* Effetto al passaggio del mouse */
+    transform: translateY(-2px);
+    /* Effetto al passaggio del mouse */
     border-color: var(--accent);
 }
 
@@ -96,14 +110,14 @@ input[type=radio] {
 }
 
 /* Input e Form */
-input[type=text], 
-input[type=email], 
-input[type=tel], 
+input[type=text],
+input[type=email],
+input[type=tel],
 select {
     width: 100%;
     padding: 12px;
     margin: 8px 0 20px;
-    border: 5px solid #a3a5a8;
+    border: 2px solid #7e7e7e;
     border-radius: 8px;
     font-size: 15px;
     transition: border-color 0.2s;
@@ -115,7 +129,7 @@ input:focus {
 }
 
 /* Bottoni */
-button, 
+button,
 input[type=submit] {
     width: 80%;
     background-color: var(--accent);
@@ -129,10 +143,10 @@ input[type=submit] {
     transition: background 0.2s;
     margin: 24px auto;
     display: block;
-    
+
 }
 
-button:hover, 
+button:hover,
 input[type=submit]:hover {
     background-color: var(--accent-hover);
 }
@@ -146,7 +160,7 @@ input[type=submit]:hover {
 
 /* Fieldset e Legend */
 fieldset {
-    border: 10px solid #a3a5a8;
+    border: 2px solid #7e7e7e;
     padding: 20px;
     margin: 20px 0;
     border-radius: var(--radius);
@@ -154,9 +168,10 @@ fieldset {
 
 legend {
     color: var(--muted);
-    font-size: 14px;
+    font-size: 24px;
     font-weight: 600;
     padding: 0 10px;
+    font-weight: bold;
 }
 
 label {
@@ -166,29 +181,72 @@ label {
     color: #444;
 }
 
+.alert-success {
+    text-align: center;
+    padding: 15px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    margin-top: 40px;
+    margin-right: 40px;
+    margin-left: 40px;
+    font-size: 14px;
+}
+
+.alert-error {
+    text-align: center;
+    padding: 15px;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    margin-top: 40px;
+    margin-right: 40px;
+    margin-left: 40px;
+    font-size: 14px;
+}
+
+.alert-error ul {
+    margin: 0;
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+.alert-error li {
+    background: transparent;
+    border: none;
+    padding: 2px 0;
+    margin: 0;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
     .container {
         padding: 12px;
         margin: 10px auto;
     }
-    
+
     .booking-card {
         padding: 20px;
     }
 
-    input[type=submit], button {
+    input[type=submit],
+    button {
         font-size: 16px;
         padding: 16px;
     }
 
     table {
-        width: 100%;      /* Su mobile usiamo lo spazio disponibile */
-        border-spacing: 5px; /* Riduciamo lo spazio tra celle */
+        width: 100%;
+        /* Su mobile usiamo lo spazio disponibile */
+        border-spacing: 5px;
+        /* Riduciamo lo spazio tra celle */
     }
-    
+
     td {
         padding: 10px 5px;
-        font-size: 13px;  /* Testo leggermente più piccolo per stare in colonna */
+        font-size: 13px;
+        /* Testo leggermente più piccolo per stare in colonna */
     }
 }

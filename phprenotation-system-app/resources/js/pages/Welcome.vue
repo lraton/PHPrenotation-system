@@ -1,4 +1,19 @@
 <template>
+    <div v-if="$page.props.flash.success" class="alert-success">
+        {{ $page.props.flash.success }}
+    </div>
+
+    <div v-if="$page.props.flash.error" class="alert-error">
+        {{ $page.props.flash.error }}
+    </div>
+    
+    <div v-if="Object.keys($page.props.errors).length > 0" class="alert-error">
+        <ul>
+            <li v-for="(error, index) in $page.props.errors" :key="index">
+                {{ error[0] }}
+            </li>
+        </ul>
+    </div>
     <div class="main-wrapper">
         
         <p id="intro">

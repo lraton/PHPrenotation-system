@@ -13,8 +13,11 @@
     @vite(['resources/js/app.js', 'resources/css/app.css'])
     @inertiaHead
 </head>
-<body>
-    <img src="/img/scritta.png" alt="PHPrenotation System">
+<body>    
+</div>
+    <a href="/" style="display:block; text-align:center; margin:20px 0;">
+        <img src="/img/scritta.png" alt="PHPrenotation System">
+    </a>
     @inertia
 </body>
 </html>
