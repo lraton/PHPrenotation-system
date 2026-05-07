@@ -38,7 +38,7 @@
         <div class="admin-section-horizontal">
             <div class="section-title">
                 <h3>📅 Gestione Date</h3>
-                <form id="reset-all-form" action="/rimuovi-tutto" method="POST">
+                <form id="reset-all-form" action="{{ route('rimuovi-tutto') }}" method="POST">
                     @csrf
                     <button type="submit" class="text-btn-danger"
                         onclick="return confirm('Sicuro di voler cancellare TUTTO?')">HARD RESET</button>
@@ -48,7 +48,7 @@
             <div class="forms-row">
                 <details open>
                     <summary>Aggiungi Singola</summary>
-                    <form method="POST" action="/aggiungi-giornate">
+                    <form method="POST" action="{{ route('aggiungi-giornate') }}`">
                         @csrf
                         <input type="date" name="data" required>
                         <input type="time" name="orario" required>
@@ -58,7 +58,7 @@
 
                 <details open>
                     <summary>Aggiungi Range</summary>
-                    <form method="POST" action="/aggiungi-giornate">
+                    <form method="POST" action="{{ route('aggiungi-giornate') }}">
                         @csrf
                         <div style="display: flex; gap: 5px;">
                             <input type="date" name="datainizio" required placeholder="Inizio">
@@ -78,7 +78,7 @@
 
                 <details open>
                     <summary class="text-danger">Elimina Date</summary>
-                    <form method="POST" action="/rimuovi-giornate">
+                    <form method="POST" action="{{ route('rimuovi-giornate') }}">
                         @csrf
                         <input type="date" name="data" required>
                         <input type="time" name="orario">
@@ -92,7 +92,7 @@
 
     <!-- LISTA SOTTO -->
     <section class="booking-list">
-        <form method="POST" action="/rimuovi-prenotazione" id="main-booking-form">
+        <form method="POST" action="{{ route('rimuovi-prenotazione') }}" id="main-booking-form">
             @csrf
             <ul class="scrollable-list">
                 @foreach ($prenotazioni as $prenotazione)
@@ -109,13 +109,13 @@
             </ul>
 
             <div class="actions-footer">
-                <button class="csv-button large-btn" type="submit" formaction="/esporta-csv">
+                <button class="csv-button large-btn" type="submit" formaction="{{ route('esporta-csv') }}">
                     📥 Esporta Selezionate in CSV
                 </button>
                 <div class="danger-zone-inline">
                     <button class="delete-btn-sm" type="submit" onclick="return confirm('Sicuro?')">Elimina
                         Selezionate</button>
-                    <button class="delete-btn-sm" type="submit" formaction="/rimuovi-tutte-prenotazioni"
+                    <button class="delete-btn-sm" type="submit" formaction="{{ route('rimuovi-tutte-prenotazioni') }}"
                         onclick="return confirm('Sicuro?')">Svuota Lista</button>
                 </div>
             </div>

@@ -12,21 +12,21 @@ Route::get('/selezione', [HandlePrenotation::class, 'selezione']);
 
 Route::post('/prenotazione', [HandlePrenotation::class, 'prenota']);
 
-Route::post('/aggiungi-giornate', [Dashboard::class, 'addGiornata'])->middleware(['auth']);
+Route::post('/aggiungi-giornate', [Dashboard::class, 'addGiornata'])->name('aggiungi-giornate')->middleware(['auth']);
 
-Route::post('/rimuovi-giornate', [Dashboard::class, 'removeGiornata'])->middleware(['auth']);
+Route::post('/rimuovi-giornate', [Dashboard::class, 'removeGiornata'])->name('rimuovi-giornate')->middleware(['auth']);
 
-Route::post('/rimuovi-tutte-giornate', [Dashboard::class, 'removeAllGiornate'])->middleware(['auth']);
+Route::post('/rimuovi-tutte-giornate', [Dashboard::class, 'removeAllGiornate'])->name('rimuovi-tutte-giornate')->middleware(['auth']);
 
-Route::post('/rimuovi-tutte-prenotazioni', [Dashboard::class, 'removeAllPrenotazioni'])->middleware(['auth']);
+Route::post('/rimuovi-tutte-prenotazioni', [Dashboard::class, 'removeAllPrenotazioni'])->name('rimuovi-tutte-prenotazioni')->middleware(['auth']);
 
-Route::post('/rimuovi-tutto', [Dashboard::class, 'removeAll'])->middleware(['auth']);
+Route::post('/rimuovi-tutto', [Dashboard::class, 'removeAll'])->name('rimuovi-tutto')->middleware(['auth']);
 
-Route::post('/esporta-csv', [Dashboard::class, 'exportCSV'])->middleware(['auth']);
+Route::post('/esporta-csv', [Dashboard::class, 'exportCSV'])->name('esporta-csv')->middleware(['auth']);
 
 Route::get('/tuttodatabase', [Dashboard::class, 'tuttoDatabase'])->middleware(['auth']);
 
-Route::post('/rimuovi-prenotazione', [Dashboard::class, 'removePrenotazione'])->middleware(['auth']);
+Route::post('/rimuovi-prenotazione', [Dashboard::class, 'removePrenotazione'])->name('rimuovi-prenotazione')->middleware(['auth']);
 
 
 Route::get('/login', function () {
