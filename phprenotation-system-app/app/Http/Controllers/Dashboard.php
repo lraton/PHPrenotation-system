@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-Use Exception;
+use Exception;
 
 
 class Dashboard extends Controller
@@ -63,8 +63,6 @@ class Dashboard extends Controller
                                 'posti_liberi' => 1, // 1 disponibile, 0 non disponibile
                             ]);
                         }
-
-
                     }
                 }
             }
@@ -88,7 +86,7 @@ class Dashboard extends Controller
         $data = $request->input('data');
         $orario = $request->input('orario');
 
-        // Validazione dei dati
+        // Validazione dei dati, solo la data è obbligatoria, l'orario è facoltativo
         if (!$data) {
             return redirect()->back()->withErrors(['message' => 'Data obbligatoria.']);
         }
@@ -126,6 +124,9 @@ class Dashboard extends Controller
                 ->distinct()
                 ->pluck('id_giornata');
 
+            if ($giornateCoinvolte->isEmpty()) {
+                return redirect()->back()->withErrors(['message' => 'Non ci sono prenotazioni da rimuovere.']);
+            }
             DB::table('prenotazione')->delete();
 
             if ($giornateCoinvolte->isNotEmpty()) {
@@ -169,7 +170,7 @@ class Dashboard extends Controller
             DB::table('prenotazione')->truncate();
             DB::table('giornata')->truncate();
         } catch (Exception $e) {
-            return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione di tutto. '.$e->getMessage()]);
+            return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione di tutto. ' . $e->getMessage()]);
         }
         return redirect()->back()->with('success', 'Tutto è stato rimosso con successo!');
     }
@@ -181,6 +182,10 @@ class Dashboard extends Controller
             ->select('prenotazione.nome', 'prenotazione.cognome', 'prenotazione.email', 'prenotazione.numero', 'giornata.data', 'giornata.orario', 'prenotazione.posti_prenotati')
             ->orderBy('giornata.data', 'desc')
             ->get();
+
+        if ($prenotazioni->isEmpty()) {
+            return redirect()->back()->withErrors(['message' => 'Non ci sono prenotazioni da esportare.']);
+        }
 
         $csvData = "Nome,Cognome,Email,Numero di Telefono,Data,Orario,Posti Prenotati\n";
 
@@ -195,6 +200,7 @@ class Dashboard extends Controller
         ]);
     }
 
+    // Endpoint per restituire tutte le prenotazioni e giornate in formato JSON (utile per debug o integrazioni future)
     public function tuttoDatabase()
     {
         $prenotazioni = DB::table('prenotazione')

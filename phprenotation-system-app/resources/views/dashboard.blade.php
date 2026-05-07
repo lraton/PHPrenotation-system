@@ -3,9 +3,10 @@
     <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
 </head>
 
-<!-- Top Bar per Logout -->
 <div class="top-bar">
     <button class="logout-button-top" type="button" onclick="window.location.href='/logout'">Esci dalla Dashboard</button>
+
+    <button class="darkmode-button-top" type="button"> Dark Mode </button>
 </div>
 
 <div class="alerts-container" style="max-width:1200px; margin: 0 auto; padding: 0 24px;">
@@ -146,6 +147,9 @@
         div.appendChild(removeBtn);
         wrapper.appendChild(div);
     });
+    document.querySelector('.darkmode-button-top').addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+    });
 </script>
 
 <style>
@@ -187,6 +191,17 @@
 
     .logout-button-top {
         background: #e53e3e;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    .darkmode-button-top {
+        background: #2b6cb0;
         color: white;
         border: none;
         padding: 8px 16px;
@@ -388,6 +403,110 @@
 
     .text-danger {
         color: #e53e3e;
+    }
+
+    /* Sovrascrittura variabili per la Dark Mode */
+    body.dark-mode {
+        --bg: #1a202c;
+        /* Sfondo scuro */
+        --card: #2d3748;
+        /* Sfondo card */
+        --accent: #63b3ed;
+        /* Azzurro più chiaro per contrasto */
+        --muted: #a0aec0;
+        /* Testo secondario chiaro */
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    input:checked+.slider {
+        background-color: #2196F3;
+    }
+
+    input:focus+.slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked+.slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+    /* Correzioni specifiche per elementi con colori hardcoded */
+    body.dark-mode {
+        color: #f7fafc;
+    }
+
+    body.dark-mode li {
+        background: #2d3748;
+        border-color: #4a5568;
+    }
+
+    body.dark-mode input {
+        background: #1a202c;
+        color: white;
+        border-color: #4a5568;
+    }
+
+    body.dark-mode details {
+        background: #2d3748;
+        border-color: #4a5568;
+    }
+
+    body.dark-mode .btn-ghost {
+        background: #4a5568;
+        color: #edf2f7;
+    }
+
+    body.dark-mode .badge {
+        background: #4a5568;
+        color: #e2e8f0;
     }
 
     @media (max-width: 768px) {
