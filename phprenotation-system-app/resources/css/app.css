@@ -73,7 +73,7 @@ h2 {
 
 /* Tabelle di orari/date */
 table {
-    width: 95%;
+    width: 100%;
     /* Non occupa il 100%, lasciando respiro ai lati */
     margin: 20px auto;
     /* La centra orizzontalmente */
@@ -131,7 +131,7 @@ input:focus {
 /* Bottoni */
 button,
 input[type=submit] {
-    width: 80%;
+    width: 100%;
     background-color: var(--accent);
     color: white;
     padding: 14px;

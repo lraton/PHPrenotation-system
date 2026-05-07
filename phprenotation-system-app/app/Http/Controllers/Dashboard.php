@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+Use Exception;
 
 
 class Dashboard extends Controller
@@ -47,22 +48,23 @@ class Dashboard extends Controller
 
         // Validazione dei dati
         if (!$data || !$orario) {
-            if (!$datainizio || !$datafine || !$orari || empty($orari)) {
+            if (!$datainizio || !$datafine || empty($orari)) {
 
                 return redirect()->back()->withErrors(['message' => 'Date e orari sono obbligatori. ' . $data . ' ' . $orario . ' ' . $datainizio . ' ' . $datafine . ' ' . json_encode($orari)]);
             } else {
                 foreach ($orari as $o) {
                     foreach ($this->generateDateRange($datainizio, $datafine) as $date) {
-                        if (DB::table('giornata')->where('data', $date)->where('orario', $o)->exists()) {
+                        if (!DB::table('giornata')->where('data', $date)->where('orario', $o)->exists()) {
                             //return redirect()->back()->withErrors(['message' => 'Il giorno ' . $date . ' con questo orario ' . $o . ' esiste già.']);
+                            // Aggiungi la nuova giornata al database
+                            DB::table('giornata')->insert([
+                                'data' => $date,
+                                'orario' => $o,
+                                'posti_liberi' => 1, // 1 disponibile, 0 non disponibile
+                            ]);
                         }
 
-                        // Aggiungi la nuova giornata al database
-                        DB::table('giornata')->insert([
-                            'data' => $date,
-                            'orario' => $o,
-                            'posti_liberi' => 1, // 1 disponibile, 0 non disponibile
-                        ]);
+
                     }
                 }
             }
@@ -101,23 +103,23 @@ class Dashboard extends Controller
 
 
             $query->delete();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione della data.']);
         }
         return redirect()->back()->with('success', 'Data rimossa con successo!');
     }
 
-    public function removeAllGiornate(Request $request)
+    public function removeAllGiornate()
     {
         try {
             DB::table('giornata')->where('posti_liberi', 1)->delete();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione di tutte le date.']);
         }
         return redirect()->back()->with('success', 'Tutte le date sono state rimosse con successo!');
     }
 
-    public function removeAllPrenotazioni(Request $request)
+    public function removeAllPrenotazioni()
     {
         try {
             $giornateCoinvolte = DB::table('prenotazione')
@@ -131,7 +133,7 @@ class Dashboard extends Controller
                     ->whereIn('id_giornata', $giornateCoinvolte)
                     ->update(['posti_liberi' => 1]);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione di tutte le prenotazioni.']);
         }
         return redirect()->back()->with('success', 'Tutte le prenotazioni sono state rimosse con successo!');
@@ -154,25 +156,25 @@ class Dashboard extends Controller
                     DB::table('giornata')->where('id_giornata', $prenotazione->id_giornata)->update(['posti_liberi' => 1]);
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione delle prenotazioni selezionate.']);
         }
 
         return redirect()->back()->with('success', 'Prenotazioni selezionate rimosse con successo!');
     }
 
-    public function removeAll(Request $request)
+    public function removeAll()
     {
         try {
             DB::table('prenotazione')->truncate();
             DB::table('giornata')->truncate();
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione di tutto.']);
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione di tutto. '.$e->getMessage()]);
         }
         return redirect()->back()->with('success', 'Tutto è stato rimosso con successo!');
     }
 
-    public function exportCSV(Request $request)
+    public function exportCSV()
     {
         $prenotazioni = DB::table('prenotazione')
             ->join('giornata', 'prenotazione.id_giornata', '=', 'giornata.id_giornata')
@@ -183,7 +185,7 @@ class Dashboard extends Controller
         $csvData = "Nome,Cognome,Email,Numero di Telefono,Data,Orario,Posti Prenotati\n";
 
         foreach ($prenotazioni as $prenotazione) {
-            $csvData .= "{$prenotazione->nome},{$prenotazione->cognome},{$prenotazione->email},{$prenotazione->numero},{$prenotazione->data},{$prenotazione->orario},{$prenotazione->posti_prenotati}\n";
+            $csvData .= "$prenotazione->nome,$prenotazione->cognome,$prenotazione->email,$prenotazione->numero,$prenotazione->data,$prenotazione->orario,$prenotazione->posti_prenotati\n";
         }
 
         return response()->streamDownload(function () use ($csvData) {
@@ -193,7 +195,7 @@ class Dashboard extends Controller
         ]);
     }
 
-    public function tuttoDatabase(Request $request)
+    public function tuttoDatabase()
     {
         $prenotazioni = DB::table('prenotazione')
             ->join('giornata', 'prenotazione.id_giornata', '=', 'giornata.id_giornata')

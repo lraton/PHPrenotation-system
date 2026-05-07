@@ -34,7 +34,7 @@ class BookingConfirmation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-        from: new Address('jeffrey@example.com', 'Jeffrey Way'),
+        from: new Address('noreply@phpprenotationsystem.com', 'Jeffrey Way'),
         subject: 'Booking confirmation',
     );
     }
@@ -45,7 +45,7 @@ class BookingConfirmation extends Mailable
     public function content(): Content
     {
         return new Content(
-        view: 'mail.booking_confirmation', 
+        view: 'mail.booking_confirmation',
         );
     }
 

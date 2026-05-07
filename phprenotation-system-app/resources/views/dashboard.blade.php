@@ -1,18 +1,100 @@
 <head>
-	<title>Dashboard - {{ $username }}</title>
+    <title>Dashboard - {{ $username }}</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
 </head>
 
-<div class="dashboard-layout">
-    <section class="booking-list">
-        <div class="list-header">
-            <h1>Ciao {{ $username }}!</h1>
-            <p>Gestisci le prenotazioni attive:</p>
-        </div>
+<!-- Top Bar per Logout -->
+<div class="top-bar">
+    <button class="logout-button-top" type="button" onclick="window.location.href='/logout'">Esci dalla Dashboard</button>
+</div>
 
+<div class="alerts-container" style="max-width:1200px; margin: 0 auto; padding: 0 24px;">
+    <div class="list-header">
+        <h1>Ciao {{ $username }}!</h1>
+        <p>Gestisci le prenotazioni e le giornate</p>
+    </div>
+    @if (session('success'))
+        <div
+            style="padding: 15px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px; margin-bottom: 20px;">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger"
+            style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
+            <ul style="margin: 0; padding-left: 20px;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+</div>
+
+<div class="dashboard-layout">
+    <aside class="booking-form-card">
+        <div class="admin-section-horizontal">
+            <div class="section-title">
+                <h3>📅 Gestione Date</h3>
+                <form id="reset-all-form" action="/rimuovi-tutto" method="POST">
+                    @csrf
+                    <button type="submit" class="text-btn-danger"
+                        onclick="return confirm('Sicuro di voler cancellare TUTTO?')">HARD RESET</button>
+                </form>
+            </div>
+
+            <div class="forms-row">
+                <details open>
+                    <summary>Aggiungi Singola</summary>
+                    <form method="POST" action="/aggiungi-giornate">
+                        @csrf
+                        <input type="date" name="data" required>
+                        <input type="time" name="orario" required>
+                        <button type="submit" class="btn-sm">Aggiungi</button>
+                    </form>
+                </details>
+
+                <details open>
+                    <summary>Aggiungi Range</summary>
+                    <form method="POST" action="/aggiungi-giornate">
+                        @csrf
+                        <div style="display: flex; gap: 5px;">
+                            <input type="date" name="datainizio" required placeholder="Inizio">
+                            <input type="date" name="datafine" required placeholder="Fine">
+                        </div>
+                        <div id="orari-wrapper">
+                            <div class="orario-item">
+                                <input type="time" name="orari[]" required>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 5px;">
+                            <button type="button" id="btn-add-orario" class="btn-ghost">+ Orario</button>
+                            <button type="submit" class="btn-sm">Aggiungi</button>
+                        </div>
+                    </form>
+                </details>
+
+                <details open>
+                    <summary class="text-danger">Elimina Date</summary>
+                    <form method="POST" action="/rimuovi-giornate">
+                        @csrf
+                        <input type="date" name="data" required>
+                        <input type="time" name="orario">
+                        <button type="submit" class="delete-btn-sm" style="width:100%"
+                            onclick="return confirm('Sicuro?')">Rimuovi</button>
+                    </form>
+                </details>
+            </div>
+        </div>
+    </aside>
+
+    <!-- LISTA SOTTO -->
+    <section class="booking-list">
         <form method="POST" action="/rimuovi-prenotazione" id="main-booking-form">
             @csrf
             <ul class="scrollable-list">
-                @foreach($prenotazioni as $prenotazione)    
+                @foreach ($prenotazioni as $prenotazione)
                     <li>
                         <input type="checkbox" name="prenotazioni[]" value="{{ $prenotazione->id_prenotazione }}">
                         <div class="booking-info">
@@ -29,360 +111,298 @@
                 <button class="csv-button large-btn" type="submit" formaction="/esporta-csv">
                     📥 Esporta Selezionate in CSV
                 </button>
-                
                 <div class="danger-zone-inline">
-                    <button class="delete-btn-sm" type="submit" onclick="return confirm('Sicuro di voler cancellare le prenotazioni selezionate?')">Elimina Selezionate</button>
-                    <button class="delete-btn-sm" type="submit" formaction="/rimuovi-tutte-prenotazioni" onclick="return confirm('Sicuro di voler cancellare TUTTO?')">Svuota Lista</button>
+                    <button class="delete-btn-sm" type="submit" onclick="return confirm('Sicuro?')">Elimina
+                        Selezionate</button>
+                    <button class="delete-btn-sm" type="submit" formaction="/rimuovi-tutte-prenotazioni"
+                        onclick="return confirm('Sicuro?')">Svuota Lista</button>
                 </div>
             </div>
         </form>
     </section>
-
-    <aside class="booking-form-card">
-        <div class="admin-section">
-            <h3>📅 Gestione Date</h3>
-            
-            <details>
-                <summary>Aggiungi Singola Data</summary>
-                <form method="POST" action="/aggiungi-giornate">
-                    @csrf
-                    <input type="date" name="data" required>
-                    <input type="time" name="orario" required>
-                    <button type="submit" class="btn-sm">Aggiungi</button>
-                </form>
-            </details>
-
-            <details open>
-                <summary>Aggiungi Range Date</summary>
-                <form method="POST" action="/aggiungi-giornate">
-                    @csrf
-					<label for="datainizio">Data Inizio:</label>
-					<input type="date" name="datainizio" required>
-					<label for="datafine">Data Fine:</label>
-					<input type="date" name="datafine" required>
-                    
-					<label for="orari">Orari (aggiungi almeno uno):</label>
-                    <div id="orari-wrapper">
-                        <div class="orario-item">
-                            <input type="time" name="orari[]" required>
-                        </div>
-                    </div>
-                    <button type="button" id="btn-add-orario" class="btn-ghost">+ Orario</button>
-                    <button type="submit">Genera Range</button>
-                </form>
-            </details>
-
-            <details>
-                <summary class="text-danger">Elimina Date</summary>
-                <form method="POST" action="/rimuovi-giornate">
-                    @csrf
-                    <input type="date" name="data" required>
-                    <input type="time" name="orario">
-                    <button type="submit" class="logout-button" style="margin-top:0" onclick="return confirm('Sicuro di voler cancellare la data selezionata?')">Rimuovi</button>
-                </form>
-            </details>
-        </div>
-
-        <div class="admin-footer">
-            <button class="logout-button" type="button" onclick="window.location.href='/logout'">Esci dalla Dashboard</button>
-            <form id="reset-all-form" action="/rimuovi-tutto" method="POST">
-				@csrf
-			 <button type="submit" class="text-btn-danger" onclick="return confirm('Sicuro di voler cancellare TUTTO? Questa azione è irreversibile!')">HARD RESET (TUTTO)</button>
-			</form>
-        </div>
-    </aside>
 </div>
+
 <script>
-	document.getElementById('btn-add-orario').addEventListener('click', function() {
-    const wrapper = document.getElementById('orari-wrapper');
-    
-    // Crea un nuovo contenitore per l'orario
-    const div = document.createElement('div');
-    div.className = 'orario-item';
-    div.style.display = 'flex';
-    div.style.gap = '5px';
-    div.style.marginBottom = '8px';
-
-    // Crea l'input
-    const input = document.createElement('input');
-    input.type = 'time';
-    input.name = 'orari[]';
-    input.required = true;
-
-    // Crea il tasto per rimuovere quel singolo orario
-    const removeBtn = document.createElement('button');
-    removeBtn.type = 'button';
-    removeBtn.innerHTML = '✕';
-    removeBtn.style.background = '#e53e3e';
-    removeBtn.style.padding = '5px 10px';
-    removeBtn.onclick = function() {
-        div.remove();
-    };
-
-    div.appendChild(input);
-    div.appendChild(removeBtn);
-    wrapper.appendChild(div);
-});
+    document.getElementById('btn-add-orario').addEventListener('click', function() {
+        const wrapper = document.getElementById('orari-wrapper');
+        const div = document.createElement('div');
+        div.className = 'orario-item';
+        div.style.display = 'flex';
+        div.style.gap = '5px';
+        div.style.marginBottom = '8px';
+        const input = document.createElement('input');
+        input.type = 'time';
+        input.name = 'orari[]';
+        input.required = true;
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.innerHTML = '✕';
+        removeBtn.style.background = '#e53e3e';
+        removeBtn.style.padding = '5px 10px';
+        removeBtn.onclick = function() {
+            div.remove();
+        };
+        div.appendChild(input);
+        div.appendChild(removeBtn);
+        wrapper.appendChild(div);
+    });
 </script>
 
-<style> 
-:root {
-	--bg: #f5f7fb;
-	--card: #ffffff;
-	--accent: #2b6cb0;
-	--muted: #6b7280;
-	--shadow: 0 4px 12px rgba(32, 33, 36, 0.08);
-	--radius: 10px;
-}
+<style>
+    :root {
+        --bg: #f5f7fb;
+        --card: #ffffff;
+        --accent: #2b6cb0;
+        --muted: #6b7280;
+        --shadow: 0 4px 12px rgba(32, 33, 36, 0.08);
+        --radius: 10px;
+    }
 
-* {
-	box-sizing: border-box
-}
+    * {
+        box-sizing: border-box
+    }
 
-body {
-	margin: 0;
-	font-family: Inter, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-	background: var(--bg);
-	color: #111;
-	min-height: 100vh
-}
+    body {
+        margin: 0;
+        font-family: Inter, sans-serif;
+        background: var(--bg);
+        color: #111;
+        padding-top: 60px;
+        /* Spazio per la top-bar */
+    }
 
-.dashboard-layout {
-	max-width: 1200px;
-	margin: 0 auto;
-	padding: 24px;
-	display: flex;
-	gap: 24px;
-	align-items: flex-start
-}
+    /* Top Bar e Logout */
+    .top-bar {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: 60px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0 24px;
+        z-index: 100;
+    }
 
-.booking-list {
-	flex: 1;
-	background: var(--card);
-	padding: 28px;
-	border-radius: var(--radius);
-	box-shadow: var(--shadow)
-}
+    .logout-button-top {
+        background: #e53e3e;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+    }
 
-.booking-form-card {
-	width: 360px;
-	background: var(--card);
-	padding: 28px;
-	border-radius: var(--radius);
-	box-shadow: var(--shadow);
-	position: sticky;
-	top: 24px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-}
+    /* Layout Principale */
+    .dashboard-layout {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px 24px 24px;
+        display: flex;
+        flex-direction: column;
+        /* Cambiato da Row a Column */
+        gap: 24px;
+    }
 
-h1 {
-	margin: 0 0 8px;
-	font-size: 28px;
-	color: var(--accent)
-}
+    /* Aside modificata in Orizzontale */
+    .booking-form-card {
+        width: 100%;
+        background: var(--card);
+        padding: 20px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+    }
 
-p {
-	margin: 0 0 18px;
-	color: var(--muted)
-}
+    .admin-section-horizontal {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
 
-ul {
-	list-style: none;
-	padding: 0;
-	margin: 0
-}
+    .section-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+    }
 
-li {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 14px;
-    border: 2px solid #7e7e7e;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    background: #fff;
-}
+    .forms-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
 
-li input[type="checkbox"] {
-    width: auto;
-    margin: 0;
-    cursor: pointer;
-	-ms-transform: scale(1.4); /* IE */
-	-moz-transform: scale(1.4); /* FF */
-	-webkit-transform: scale(1.4); /* Safari and Chrome */
-	-o-transform: scale(1.4); /* Opera */
-	transform: scale(1.4);
-	margin-right: 32px;
-}
+    .forms-row details {
+        flex: 1;
+        min-width: 250px;
+        margin-bottom: 0;
+    }
 
-form {
-	display: flex;
-	flex-direction: column;
-	gap: 12px
-}
+    /* Lista Prenotazioni */
+    .booking-list {
+        background: var(--card);
+        padding: 28px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+    }
 
-input {
-	width: 100%;
-	padding: 10px 12px;
-	border: 1px solid #dbe3ee;
-	border-radius: 8px;
-	font: inherit
-}
+    /* Elementi comuni */
+    h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        color: var(--accent)
+    }
 
-button {
-	border: 0;
-	padding: 12px 16px;
-	background: var(--accent);
-	color: #fff;
-	border-radius: 8px;
-	cursor: pointer;
-	font-weight: 600
-}
+    h3 {
+        margin: 0;
+        font-size: 18px;
+        color: var(--accent);
+    }
 
-.logout-button {
-	background: #e53e3e;
-	margin-top: 30px;
-	width: 100%;
-}
+    p {
+        margin: 0 0 18px;
+        color: var(--muted)
+    }
 
-.csv-button {
-	background: #38a169;
-	margin-top: 10px;
-	width: 100%;
-}
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0
+    }
 
-/* Layout Migliorato per la lista */
-.booking-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
+    li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        background: #fff;
+    }
 
-.badge {
-    background: #edf2f7;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: bold;
-    width: fit-content;
-}
+    li input[type="checkbox"] {
+        transform: scale(1.4);
+        margin-right: 20px;
+        width: auto;
+    }
 
-.contact-info {
-    font-size: 12px;
-    color: var(--muted);
-}
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 8px
+    }
 
-/* Footer Azioni */
-.actions-footer {
-    margin-top: 25px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
+    input {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #dbe3ee;
+        border-radius: 6px;
+        font-size: 14px;
+    }
 
-.large-btn {
-    padding: 18px !important;
-    font-size: 18px !important;
-}
+    button {
+        border: 0;
+        padding: 10px 14px;
+        background: var(--accent);
+        color: #fff;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600
+    }
 
-.danger-zone-inline {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
+    .csv-button {
+        background: #38a169;
+        width: 100%;
+    }
 
-.delete-btn-sm {
-    background: #feb2b2;
-    color: #9b2c2c;
-    padding: 8px;
-    font-size: 13px;
-}
+    .booking-info {
+        display: flex;
+        flex-direction: column;
+    }
 
-.delete-btn-sm:hover {
-    background: #fc8181;
-}
+    .badge {
+        background: #edf2f7;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: bold;
+        width: fit-content;
+    }
 
-/* Sidebar Amministrazione */
-.admin-section h3 {
-    font-size: 18px;
-    margin-bottom: 20px;
-    color: var(--accent);
-}
+    .contact-info {
+        font-size: 12px;
+        color: var(--muted);
+    }
 
-details {
-    background: #f8fafc;
-    border-radius: 6px;
-    margin-bottom: 10px;
-    padding: 10px;
-}
+    .actions-footer {
+        margin-top: 25px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
 
-summary {
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 5px;
-}
+    .danger-zone-inline {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
 
+    .delete-btn-sm {
+        background: #feb2b2;
+        color: #9b2c2c;
+        padding: 8px;
+        font-size: 13px;
+    }
 
-.btn-ghost {
-    background: #edf2f7;
-    color: #4a5568;
-    font-size: 12px;
-    padding: 5px;
-}
+    details {
+        background: #f8fafc;
+        border: 1px solid #edf2f7;
+        border-radius: 6px;
+        padding: 10px;
+    }
 
-.text-btn-danger {
-    background: transparent;
-    color: #e53e3e;
-    font-size: 11px;
-    margin-top: 15px;
-    text-decoration: underline;
-}
+    summary {
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
 
-.admin-footer {
-    margin-top: 20px;
-    border-top: 1px solid #eee;
-    padding-top: 10px;
-    display: flex;
-    flex-direction: column;
-}
+    .btn-ghost {
+        background: #edf2f7;
+        color: #4a5568;
+        font-size: 12px;
+    }
 
-.text-danger { color: #e53e3e; }
+    .text-btn-danger {
+        background: transparent;
+        color: #e53e3e;
+        font-size: 11px;
+        text-decoration: underline;
+        padding: 0;
+    }
 
-@media (max-width: 600px) {
-	.dashboard-layout {
-		padding: 12px;
-		flex-direction: column-reverse;
-		gap: 20px;
-		width: 100%;
-        box-sizing: border-box;
-	}
+    .text-danger {
+        color: #e53e3e;
+    }
 
-	.alerts-container {
-		padding: 0 12px;
-	}
+    @media (max-width: 768px) {
+        .forms-row {
+            flex-direction: column;
+        }
 
-	.booking-form-card {
-		width: 100%;
-		position: static;
-		padding: 20px;
-		order: 1;
-	}
+        .top-bar {
+            position: relative;
+            justify-content: center;
+            padding: 10px;
+        }
 
-	.booking-list {
-		order: 2;
-	}
-
-	input,
-	button {
-		font-size: 16px;
-	}
-
-	h1 {
-		font-size: 24px;
-		text-align: center;
-	}
-}
-
+        body {
+            padding-top: 0;
+        }
+    }
 </style>

@@ -6,14 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Carbon\Carbon;
-
 class login extends Controller
 {
-    private $token = 'XBjdp5v5ALkSh7FDxEZC9R4hhjYvqSVW6mw8KyQAZYZu1xxw6KgRrqyerlEoYyDTsILDbhq2tGx7DfWzVBPsUfdrpufUHTlSvWZR50uVKJMCj13k8DJuUge5d0QH4CEReBdCX';
-
     public function index(Request $request)
     {
         $username = $request->input('user');

@@ -17,6 +17,7 @@ class HandlePrenotation extends Controller
     private function sendmail(String $email, Collection $booking)
     {
         Mail::to($email)->send(new BookingConfirmation($booking));
+        Mail::to('noreply@phpprenotationsystem.com')->send(new BookingConfirmation($booking));
     }
 
     public function index()
@@ -114,7 +115,7 @@ class HandlePrenotation extends Controller
             'guests' => $posti
         ]);
 
-        if ($dataScelta === null || $orarioScelto === null || $nome === null || $cognome === null || $email === null || $telefono === null || $posti === null) {
+        if ($orarioScelto === null || $nome === null || $cognome === null || $email === null || $telefono === null || $posti === null) {
             $request->session()->forget(['selected_date', 'orario', 'nome', 'cognome', 'email', 'telefono', 'posti']);
             return back()->withErrors(['error' => 'Compila tutti i campi.']);
         }
