@@ -28,7 +28,7 @@ class Dashboard extends Controller
     {
         $prenotazioni = DB::table('prenotazione')
             ->join('giornata', 'prenotazione.id_giornata', '=', 'giornata.id_giornata')
-            ->select('prenotazione.*', 'giornata.data', 'giornata.orario', 'prenotazione.id_prenotazione', 'prenotazione.telefono', 'prenotazione.posti_prenotati')
+            ->select('prenotazione.*', 'giornata.data', 'giornata.orario', 'prenotazione.id_prenotazione', 'prenotazione.telefono', 'prenotazione.posti_prenotati', 'prenotazione.conferma')
             ->orderBy('giornata.data', 'desc')
             ->get();
 
@@ -198,6 +198,27 @@ class Dashboard extends Controller
         }, 'prenotazioni.csv', [
             'Content-Type' => 'text/csv',
         ]);
+    }
+
+    public function confermaPrenotazione(Request $request)
+    {
+        $token = $request->query('token');
+
+        if (!$token) {
+            return redirect('/')->withErrors(['error' => 'Token di conferma non valido.']);
+        }
+
+        if (!DB::table('prenotazione')->where('qr_token', $token)->exists()) {
+            return redirect('/')->withErrors(['error' => 'Token di conferma non valido.']);
+        }
+
+        try {
+            DB::table('prenotazione')->where('qr_token', $token)->update(['conferma' => 1]);
+        } catch (Exception $e) {
+            return redirect('/')->withErrors(['error' => 'Si è verificato un errore durante la conferma della prenotazione.']);
+        }
+
+        return redirect('/dashboard')->with('success', 'Prenotazione confermata con successo!');
     }
 
     // Endpoint per restituire tutte le prenotazioni e giornate in formato JSON (utile per debug o integrazioni future)

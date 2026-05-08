@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
@@ -11,12 +10,13 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Support\Collection;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 
 class BookingConfirmation extends Mailable
 {
 
-    public $booking;
+    public Collection $booking;
 
     use Queueable, SerializesModels;
 
@@ -34,9 +34,9 @@ class BookingConfirmation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-        from: new Address('noreply@phpprenotationsystem.com', 'Jeffrey Way'),
-        subject: 'Booking confirmation',
-    );
+            from: new Address('noreply@phpprenotationsystem.com', 'Jeffrey Way'),
+            subject: 'Booking confirmation',
+        );
     }
 
     /**
@@ -44,8 +44,9 @@ class BookingConfirmation extends Mailable
      */
     public function content(): Content
     {
+
         return new Content(
-        view: 'mail.booking_confirmation',
+            view: 'mail.booking_confirmation'
         );
     }
 
@@ -56,6 +57,13 @@ class BookingConfirmation extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        return [
+            Attachment::fromData(
+                fn() => (string) QrCode::format('svg')
+                    ->size(300)
+                    ->generate('http://localhost/conferma-prenotazione?token=' . $this->booking->get('qr_token')),
+                'qrcode.svg'
+            )->withMime('image/svg+xml'),
+        ];
     }
 }

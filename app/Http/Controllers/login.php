@@ -65,27 +65,16 @@ class login extends Controller
     {
 
         Schema::dropIfExists('prenotazione');
-        Schema::dropIfExists('giornata');
-        Schema::dropIfExists('admin');
+        //Schema::dropIfExists('giornata');
+        //Schema::dropIfExists('admin');
 
-        // Creazione tabella 'admin'
-        Schema::create('admin', function (Blueprint $table) {
-            $table->string('username', 40);
-            $table->string('password', 300);
-            $table->string('token')->nullable(); // Estratto dalla struttura SQL 
-        });
-
-        // Creazione tabella 'giornata'
-        Schema::create('giornata', function (Blueprint $table) {
-            $table->integer('id_giornata')->autoIncrement(); // PRIMARY KEY AUTOINCREMENT 
-            $table->date('data');
-            $table->time('orario');
-            $table->integer('libera')->default(1);
-        });
 
         // Creazione tabella 'prenotazione'
         Schema::create('prenotazione', function (Blueprint $table) {
             $table->integer('id_prenotazione')->autoIncrement(); // PRIMARY KEY AUTOINCREMENT 
+            $table->string('cancel_token', 300)->unique();
+            $table->string('qr_token', 300)->unique();
+            $table->boolean('conferma')->default(false);
             $table->string('nome', 40);
             $table->string('cognome', 40);
             $table->string('email', 40);
@@ -94,10 +83,16 @@ class login extends Controller
             $table->integer('id_giornata');
 
             // Se desideri aggiungere la relazione con la tabella giornata:
-            // $table->foreign('id_giornata')->references('id_giornata')->on('giornata');
+            $table->foreign('id_giornata')->references('id_giornata')->on('giornata');
         });
 
         return "Tabelle create con successo!";
+    }
+
+    public function test(){
+        $columns = Schema::getColumnListing('prenotazione');
+        return $columns;
+
     }
 
     public function signup()

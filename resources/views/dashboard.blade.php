@@ -92,36 +92,45 @@
 
         <!-- LISTA SOTTO -->
         <section class="booking-list">
-            <form method="POST" action="{{ route('rimuovi-prenotazione') }}" id="main-booking-form">
-                @csrf
-                <ul class="scrollable-list">
-                    @foreach ($prenotazioni as $prenotazione)
-                        <li>
-                            <input type="checkbox" name="prenotazioni[]" value="{{ $prenotazione->id_prenotazione }}">
-                            <div class="booking-info">
-                                <span class="badge">{{ $prenotazione->posti_prenotati }} Persone</span>
-                                <strong>{{ $prenotazione->nome }} {{ $prenotazione->cognome }}</strong>
-                                <small>{{ $prenotazione->data }} alle {{ $prenotazione->orario }}</small>
-                                <span class="contact-info">{{ $prenotazione->telefono }} -
-                                    {{ $prenotazione->email }}</span>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
+            <details open>
+                <summary>Lista Prenotazioni</summary>
+                <form method="POST" action="{{ route('rimuovi-prenotazione') }}" id="main-booking-form">
+                    @csrf
+                    <ul class="scrollable-list">
+                        @foreach ($prenotazioni as $prenotazione)
+                            <li>
+                                <input type="checkbox" name="prenotazioni[]"
+                                    value="{{ $prenotazione->id_prenotazione }}">
+                                <div class="booking-info">
+                                    <span class="badge">{{ $prenotazione->posti_prenotati }} Persone</span>
+                                    <strong>{{ $prenotazione->nome }} {{ $prenotazione->cognome }}</strong>
+                                    <small>{{ $prenotazione->data }} alle {{ $prenotazione->orario }}</small>
+                                    <span class="contact-info">{{ $prenotazione->telefono }} -
+                                        {{ $prenotazione->email }}</span>
+                                </div>
+                                <div class="booking-info" style="margin-left:auto;">
+                                    <span class="badge" style="background:{{ $prenotazione->conferma ? '#38a169' : '#e53e3e' }};">
+                                        {{ $prenotazione->conferma ? 'Confermato' : 'Non confermato' }}
+                                    </span>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
 
-                <div class="actions-footer">
-                    <button class="csv-button large-btn" type="submit" formaction="{{ route('esporta-csv') }}">
-                        📥 Esporta Selezionate in CSV
-                    </button>
-                    <div class="danger-zone-inline">
-                        <button class="delete-btn-sm" type="submit" onclick="return confirm('Sicuro?')">Elimina
-                            Selezionate</button>
-                        <button class="delete-btn-sm" type="submit"
-                            formaction="{{ route('rimuovi-tutte-prenotazioni') }}"
-                            onclick="return confirm('Sicuro?')">Svuota Lista</button>
+                    <div class="actions-footer">
+                        <button class="csv-button large-btn" type="submit" formaction="{{ route('esporta-csv') }}">
+                            📥 Esporta in CSV
+                        </button>
+                        <div class="danger-zone-inline">
+                            <button class="delete-btn-sm" type="submit" onclick="return confirm('Sicuro?')">Elimina
+                                Selezionate</button>
+                            <button class="delete-btn-sm" type="submit"
+                                formaction="{{ route('rimuovi-tutte-prenotazioni') }}"
+                                onclick="return confirm('Sicuro?')">Svuota Lista</button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </details>
         </section>
     </div>
 </body>

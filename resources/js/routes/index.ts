@@ -390,3 +390,165 @@ rimuoviPrenotazioneForm.post = (options?: RouteQueryOptions): RouteFormDefinitio
 })
 
 rimuoviPrenotazione.form = rimuoviPrenotazioneForm
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
+* @see app/Http/Controllers/HandlePrenotation.php:182
+* @route '/cancella-prenotazione'
+*/
+export const cancellaPrenotazione = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: cancellaPrenotazione.url(options),
+    method: 'get',
+})
+
+cancellaPrenotazione.definition = {
+    methods: ["get","head"],
+    url: '/cancella-prenotazione',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
+* @see app/Http/Controllers/HandlePrenotation.php:182
+* @route '/cancella-prenotazione'
+*/
+cancellaPrenotazione.url = (options?: RouteQueryOptions) => {
+    return cancellaPrenotazione.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
+* @see app/Http/Controllers/HandlePrenotation.php:182
+* @route '/cancella-prenotazione'
+*/
+cancellaPrenotazione.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: cancellaPrenotazione.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
+* @see app/Http/Controllers/HandlePrenotation.php:182
+* @route '/cancella-prenotazione'
+*/
+cancellaPrenotazione.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: cancellaPrenotazione.url(options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
+* @see app/Http/Controllers/HandlePrenotation.php:182
+* @route '/cancella-prenotazione'
+*/
+const cancellaPrenotazioneForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: cancellaPrenotazione.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
+* @see app/Http/Controllers/HandlePrenotation.php:182
+* @route '/cancella-prenotazione'
+*/
+cancellaPrenotazioneForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: cancellaPrenotazione.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
+* @see app/Http/Controllers/HandlePrenotation.php:182
+* @route '/cancella-prenotazione'
+*/
+cancellaPrenotazioneForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: cancellaPrenotazione.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+cancellaPrenotazione.form = cancellaPrenotazioneForm
+
+/**
+* @see \App\Http\Controllers\Dashboard::confermaPrenotazione
+* @see app/Http/Controllers/Dashboard.php:203
+* @route '/conferma-prenotazione'
+*/
+export const confermaPrenotazione = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: confermaPrenotazione.url(options),
+    method: 'get',
+})
+
+confermaPrenotazione.definition = {
+    methods: ["get","head"],
+    url: '/conferma-prenotazione',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Dashboard::confermaPrenotazione
+* @see app/Http/Controllers/Dashboard.php:203
+* @route '/conferma-prenotazione'
+*/
+confermaPrenotazione.url = (options?: RouteQueryOptions) => {
+    return confermaPrenotazione.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Dashboard::confermaPrenotazione
+* @see app/Http/Controllers/Dashboard.php:203
+* @route '/conferma-prenotazione'
+*/
+confermaPrenotazione.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: confermaPrenotazione.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Dashboard::confermaPrenotazione
+* @see app/Http/Controllers/Dashboard.php:203
+* @route '/conferma-prenotazione'
+*/
+confermaPrenotazione.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: confermaPrenotazione.url(options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\Dashboard::confermaPrenotazione
+* @see app/Http/Controllers/Dashboard.php:203
+* @route '/conferma-prenotazione'
+*/
+const confermaPrenotazioneForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: confermaPrenotazione.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Dashboard::confermaPrenotazione
+* @see app/Http/Controllers/Dashboard.php:203
+* @route '/conferma-prenotazione'
+*/
+confermaPrenotazioneForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: confermaPrenotazione.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Dashboard::confermaPrenotazione
+* @see app/Http/Controllers/Dashboard.php:203
+* @route '/conferma-prenotazione'
+*/
+confermaPrenotazioneForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: confermaPrenotazione.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+confermaPrenotazione.form = confermaPrenotazioneForm

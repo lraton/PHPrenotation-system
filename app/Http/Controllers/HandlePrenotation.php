@@ -10,6 +10,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\BookingConfirmation;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 
 class HandlePrenotation extends Controller
@@ -20,7 +21,7 @@ class HandlePrenotation extends Controller
             Mail::to($email)->send(new BookingConfirmation($booking));
             Mail::to('noreply@phpprenotationsystem.com')->send(new BookingConfirmation($booking));
         } catch (Throwable $caught) {
-            return redirect('/')->withErrors(['error' => 'Prenotazione effettuata, ma non siamo riusciti a inviare l\'email di conferma.']);
+            return redirect('/')->withErrors(['error' => 'Prenotazione effettuata, ma non siamo riusciti a inviare l\'email di conferma.'.$caught->getMessage()]);
         }
     }
 
@@ -112,7 +113,10 @@ class HandlePrenotation extends Controller
         $telefono = $request->session()->get('telefono');
         $request->session()->put('posti', $request->input('posti'));
         $posti = $request->session()->get('posti');
+
         $booking = collect([
+            'cancel_token' => Str::random(80),
+            'qr_token' => Str::random(80),
             'name' => $nome . ' ' . $cognome,
             'date' => $dataScelta,
             'time' => $orarioScelto,
@@ -143,6 +147,8 @@ class HandlePrenotation extends Controller
                     ->where('orario', $orarioScelto)
                     ->value('id_giornata'),
                 'posti_prenotati' => $posti,
+                'cancel_token' => $booking->get('cancel_token'), // Token univoco per la cancellazione
+                'qr_token' => $booking->get('qr_token'), // Token univoco per il QR code
             ]);
         } catch (Throwable $caught) {
             $request->session()->forget(['selected_date', 'orario', 'nome', 'cognome', 'email', 'telefono', 'posti']);
@@ -158,25 +164,42 @@ class HandlePrenotation extends Controller
                 ->decrement('libera');
         } catch (Throwable $caught) {
             DB::table('prenotazione')
-                ->where('nome', $nome)
-                ->where('cognome', $cognome)
-                ->where('email', $email)
-                ->where('telefono', $telefono)
-                ->where('id_giornata', DB::table('giornata')
-                    ->where('data', $dataScelta)
-                    ->where('orario', $orarioScelto)
-                    ->value('id_giornata'))
+                ->where('cancel_token', $booking->cancel_token)
                 ->delete();
             $request->session()->forget(['selected_date', 'orario', 'nome', 'cognome', 'email', 'telefono', 'posti']);
-            return back()->withErrors(['error' => $caught->getMessage()]);
+            return back()->withErrors(['error' => 'Si è verificato un errore durante la cancellazione della prenotazione.']);
         }
 
         // Invia l'email di conferma, ma da errore acnhe se la invia
-        ///$this->sendmail($email, $booking);
+        $this->sendmail($email, $booking);
 
 
         // Puliamo la sessione dopo la prenotazione
         $request->session()->forget(['selected_date', 'orario', 'nome', 'cognome', 'email', 'telefono', 'posti']);
         return redirect('/')->with('success', 'Prenotazione effettuata con successo per il ' . $dataScelta . ' alle ' . $orarioScelto . '!');
+    }
+
+    function cancellaPrenotazione(Request $request)
+    {
+        $token = $request->query('token');
+
+        if (!$token) {
+            return redirect('/')->withErrors(['error' => 'Token di cancellazione mancante.']);
+        }
+
+        $prenotazione = DB::table('prenotazione')->where('cancel_token', $token)->first();
+
+        if (!$prenotazione) {
+            return redirect('/')->withErrors(['error' => 'Token di cancellazione non valido.']);
+        }
+
+        try {
+            DB::table('prenotazione')->where('id_prenotazione', $prenotazione->id_prenotazione)->delete();
+            DB::table('giornata')->where('id_giornata', $prenotazione->id_giornata)->increment('libera');
+        } catch (Throwable $caught) {
+            return redirect('/')->withErrors(['error' => 'Si è verificato un errore durante la cancellazione della prenotazione.']);
+        }
+
+        return redirect('/')->with('success', 'Prenotazione cancellata con successo.');
     }
 }

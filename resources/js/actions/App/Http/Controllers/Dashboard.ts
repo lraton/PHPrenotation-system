@@ -337,7 +337,7 @@ exportCSV.form = exportCSVForm
 
 /**
 * @see \App\Http\Controllers\Dashboard::tuttoDatabase
-* @see app/Http/Controllers/Dashboard.php:204
+* @see app/Http/Controllers/Dashboard.php:225
 * @route '/tuttodatabase'
 */
 export const tuttoDatabase = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -352,7 +352,7 @@ tuttoDatabase.definition = {
 
 /**
 * @see \App\Http\Controllers\Dashboard::tuttoDatabase
-* @see app/Http/Controllers/Dashboard.php:204
+* @see app/Http/Controllers/Dashboard.php:225
 * @route '/tuttodatabase'
 */
 tuttoDatabase.url = (options?: RouteQueryOptions) => {
@@ -361,7 +361,7 @@ tuttoDatabase.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Dashboard::tuttoDatabase
-* @see app/Http/Controllers/Dashboard.php:204
+* @see app/Http/Controllers/Dashboard.php:225
 * @route '/tuttodatabase'
 */
 tuttoDatabase.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -371,7 +371,7 @@ tuttoDatabase.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Dashboard::tuttoDatabase
-* @see app/Http/Controllers/Dashboard.php:204
+* @see app/Http/Controllers/Dashboard.php:225
 * @route '/tuttodatabase'
 */
 tuttoDatabase.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -381,7 +381,7 @@ tuttoDatabase.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => (
 
 /**
 * @see \App\Http\Controllers\Dashboard::tuttoDatabase
-* @see app/Http/Controllers/Dashboard.php:204
+* @see app/Http/Controllers/Dashboard.php:225
 * @route '/tuttodatabase'
 */
 const tuttoDatabaseForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -391,7 +391,7 @@ const tuttoDatabaseForm = (options?: RouteQueryOptions): RouteFormDefinition<'ge
 
 /**
 * @see \App\Http\Controllers\Dashboard::tuttoDatabase
-* @see app/Http/Controllers/Dashboard.php:204
+* @see app/Http/Controllers/Dashboard.php:225
 * @route '/tuttodatabase'
 */
 tuttoDatabaseForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -401,7 +401,7 @@ tuttoDatabaseForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'
 
 /**
 * @see \App\Http\Controllers\Dashboard::tuttoDatabase
-* @see app/Http/Controllers/Dashboard.php:204
+* @see app/Http/Controllers/Dashboard.php:225
 * @route '/tuttodatabase'
 */
 tuttoDatabaseForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -471,6 +471,87 @@ removePrenotazioneForm.post = (options?: RouteQueryOptions): RouteFormDefinition
 })
 
 removePrenotazione.form = removePrenotazioneForm
+
+/**
+* @see \App\Http\Controllers\Dashboard::confermaPrenotazione
+* @see app/Http/Controllers/Dashboard.php:203
+* @route '/conferma-prenotazione'
+*/
+export const confermaPrenotazione = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: confermaPrenotazione.url(options),
+    method: 'get',
+})
+
+confermaPrenotazione.definition = {
+    methods: ["get","head"],
+    url: '/conferma-prenotazione',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\Dashboard::confermaPrenotazione
+* @see app/Http/Controllers/Dashboard.php:203
+* @route '/conferma-prenotazione'
+*/
+confermaPrenotazione.url = (options?: RouteQueryOptions) => {
+    return confermaPrenotazione.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\Dashboard::confermaPrenotazione
+* @see app/Http/Controllers/Dashboard.php:203
+* @route '/conferma-prenotazione'
+*/
+confermaPrenotazione.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: confermaPrenotazione.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Dashboard::confermaPrenotazione
+* @see app/Http/Controllers/Dashboard.php:203
+* @route '/conferma-prenotazione'
+*/
+confermaPrenotazione.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: confermaPrenotazione.url(options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\Dashboard::confermaPrenotazione
+* @see app/Http/Controllers/Dashboard.php:203
+* @route '/conferma-prenotazione'
+*/
+const confermaPrenotazioneForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: confermaPrenotazione.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Dashboard::confermaPrenotazione
+* @see app/Http/Controllers/Dashboard.php:203
+* @route '/conferma-prenotazione'
+*/
+confermaPrenotazioneForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: confermaPrenotazione.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Dashboard::confermaPrenotazione
+* @see app/Http/Controllers/Dashboard.php:203
+* @route '/conferma-prenotazione'
+*/
+confermaPrenotazioneForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: confermaPrenotazione.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+confermaPrenotazione.form = confermaPrenotazioneForm
 
 /**
 * @see \App\Http\Controllers\Dashboard::index
@@ -553,6 +634,6 @@ indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 index.form = indexForm
 
-const Dashboard = { addGiornata, removeGiornata, removeAllGiornate, removeAllPrenotazioni, removeAll, exportCSV, tuttoDatabase, removePrenotazione, index }
+const Dashboard = { addGiornata, removeGiornata, removeAllGiornate, removeAllPrenotazioni, removeAll, exportCSV, tuttoDatabase, removePrenotazione, confermaPrenotazione, index }
 
 export default Dashboard

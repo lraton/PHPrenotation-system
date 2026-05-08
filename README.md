@@ -5,12 +5,12 @@
 
 ---
 
-## 🧩 Features
+## Features
 
-- 📅 Dynamic selection of available dates (loaded from a MySQL database)
-- 🎨 Simple and mobile-friendly user interface
-- 🏗️ Easy to customize for any kind of event or activity
-- ⚙️ Fully written in **PHP**, with no external backend dependencies
+- Dynamic selection of available dates (loaded from a MySQL database)
+- Simple and mobile-friendly user interface
+- Easy to customize for any kind of event or activity
+- Fully written in **LARAVEL**, with no external backend dependencies
 
 ---
 
@@ -44,20 +44,7 @@ Open your browser and navigate to [http://localhost](http://localhost).
 
 ---
 
-## 📌 TODO
-
-- [ ] **Refactor to MVC**:  
-  Separate logic (controllers), presentation (views), and data access (models) into a clean MVC-style architecture.
-  
-- [ ] **Improve CSS & UX**:  
-  Make the interface more modern and mobile responsive, improve accessibility, and add smoother UI feedback (e.g., loading indicators, disabled states).
-
-- [ ] **Internationalization (i18n)**:  
-  Add support for multiple languages using language files or simple translation methods.
-
----
-
-## 📃 License
+## License
 
 This project is released under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html).  
 You are free to use, modify, and distribute this software, provided that any derivative works are also licensed under the GPL.

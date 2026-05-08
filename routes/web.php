@@ -28,6 +28,10 @@ Route::get('/tuttodatabase', [Dashboard::class, 'tuttoDatabase'])->middleware(['
 
 Route::post('/rimuovi-prenotazione', [Dashboard::class, 'removePrenotazione'])->name('rimuovi-prenotazione')->middleware(['auth']);
 
+Route::get('/cancella-prenotazione', [HandlePrenotation::class, 'cancellaPrenotazione'])->name('cancella-prenotazione');
+
+Route::get('/conferma-prenotazione', [Dashboard::class, 'confermaPrenotazione'])->name('conferma-prenotazione')->middleware(['auth']);
+
 
 Route::get('/login', function () {
     return view('login');
@@ -39,5 +43,8 @@ Route::get('/dashboard', [Dashboard::class, 'index'])->middleware(['auth']);
 
 Route::get('/logout', [logout::class, 'index'])->middleware(['auth']);
 
-Route::get('/crea-db', [login::class, 'db']);
+Route::get('/crea-db', [login::class, 'db'])->middleware(['auth']);
+
+Route::get('/test', [login::class, 'test'])->middleware(['auth']);
+
 Route::get('/signup', [login::class, 'signup']);
