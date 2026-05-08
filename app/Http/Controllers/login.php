@@ -28,17 +28,17 @@ class login extends Controller
             return redirect('/login')->withErrors(['Account bloccato per 24 ore.']);
         }
 
-        $admin = DB::table('admin')->where('nome', $username)->first();
+        $admin = DB::table('admin')->where('username', $username)->first();
 
         if ($admin && Hash::check($password, $admin->password)) {
             cache()->forget($lockoutKey);
             cache()->forget($blockedKey);
             $newToken = Str::random(80);
-            DB::table('admin')->where('nome', $admin->nome)->update([
+            DB::table('admin')->where('username', $admin->username)->update([
                 'token' => hash('sha256', $newToken) // Salva l'hash, non il token vero!
             ]);
             $request->session()->put(['token' => $newToken]);
-            $request->session()->put(['username' => $admin->nome]);
+            $request->session()->put(['username' => $admin->username]);
             return redirect('/dashboard');
         }
 
@@ -63,9 +63,14 @@ class login extends Controller
 
     public function db()
     {
+
+        Schema::dropIfExists('prenotazione');
+        Schema::dropIfExists('giornata');
+        Schema::dropIfExists('admin');
+
         // Creazione tabella 'admin'
         Schema::create('admin', function (Blueprint $table) {
-            $table->string('nome', 40);
+            $table->string('username', 40);
             $table->string('password', 300);
             $table->string('token')->nullable(); // Estratto dalla struttura SQL 
         });
@@ -75,7 +80,7 @@ class login extends Controller
             $table->integer('id_giornata')->autoIncrement(); // PRIMARY KEY AUTOINCREMENT 
             $table->date('data');
             $table->time('orario');
-            $table->integer('posti_liberi');
+            $table->integer('libera')->default(1);
         });
 
         // Creazione tabella 'prenotazione'
@@ -84,7 +89,7 @@ class login extends Controller
             $table->string('nome', 40);
             $table->string('cognome', 40);
             $table->string('email', 40);
-            $table->string('numero', 30);
+            $table->string('telefono', 30);
             $table->integer('posti_prenotati');
             $table->integer('id_giornata');
 
@@ -103,7 +108,7 @@ class login extends Controller
         $password = 'admin123';
 
         DB::table('admin')->insert([
-            'nome' => $username,
+            'username' => $username,
             'password' => Hash::make($password)
         ]);
 

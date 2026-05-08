@@ -29,7 +29,7 @@ class HandlePrenotation extends Controller
         // Recuperiamo le date uniche dalla tabella 'giornata'
         $giornate = DB::table('giornata')
             ->select('data')
-            ->where('posti_liberi', '>', 0)
+            ->where('libera', '>', 0)
             ->groupBy('data')
             ->orderBy('data')
             ->get()
@@ -71,13 +71,13 @@ class HandlePrenotation extends Controller
         $request->session()->put('selected_date', $request->input('date'));
         $dataScelta = $request->input('date');
 
-        if ($dataScelta === null || !DB::table('giornata')->where('data', $dataScelta)->exists() || DB::table('giornata')->where('data', $dataScelta)->value('posti_liberi') == 0 || $dataScelta < Carbon::today()->toDateString()) {
+        if ($dataScelta === null || !DB::table('giornata')->where('data', $dataScelta)->exists() || DB::table('giornata')->where('data', $dataScelta)->value('libera') == 0 || $dataScelta < Carbon::today()->toDateString()) {
             $request->session()->forget(['selected_date']);
             return redirect('/')->withErrors(['error' => 'Nessuna data selezionata.']);
         }
 
         $orariDisponibili = DB::table('giornata')
-            ->where('data', $dataScelta)->where('posti_liberi', '>', 0)
+            ->where('data', $dataScelta)->where('libera', '>', 0)
             ->orderBy('orario')
             ->get();
 
@@ -126,7 +126,7 @@ class HandlePrenotation extends Controller
         }
 
         // Controlla se ci sono posti disponibili per la data e l'orario scelti
-        if (DB::table('giornata')->where('data', $dataScelta)->where('orario', $orarioScelto)->value('posti_liberi') == 0) {
+        if (DB::table('giornata')->where('data', $dataScelta)->where('orario', $orarioScelto)->value('libera') == 0) {
             $request->session()->forget(['selected_date', 'orario', 'nome', 'cognome', 'email', 'telefono', 'posti']);
             return back()->withErrors(['error' => 'Il numero di posti deve essere almeno 1.']);
         }
@@ -137,7 +137,7 @@ class HandlePrenotation extends Controller
                 'nome' => $nome,
                 'cognome' => $cognome,
                 'email' => $email,
-                'numero' => $telefono,
+                'telefono' => $telefono,
                 'id_giornata' => DB::table('giornata')
                     ->where('data', $dataScelta)
                     ->where('orario', $orarioScelto)
@@ -155,13 +155,13 @@ class HandlePrenotation extends Controller
             DB::table('giornata')
                 ->where('data', $dataScelta)
                 ->where('orario', $orarioScelto)
-                ->decrement('posti_liberi');
+                ->decrement('libera');
         } catch (Throwable $caught) {
             DB::table('prenotazione')
                 ->where('nome', $nome)
                 ->where('cognome', $cognome)
                 ->where('email', $email)
-                ->where('numero', $telefono)
+                ->where('telefono', $telefono)
                 ->where('id_giornata', DB::table('giornata')
                     ->where('data', $dataScelta)
                     ->where('orario', $orarioScelto)

@@ -28,7 +28,7 @@ class Dashboard extends Controller
     {
         $prenotazioni = DB::table('prenotazione')
             ->join('giornata', 'prenotazione.id_giornata', '=', 'giornata.id_giornata')
-            ->select('prenotazione.*', 'giornata.data', 'giornata.orario', 'prenotazione.id_prenotazione', 'prenotazione.numero', 'prenotazione.posti_prenotati')
+            ->select('prenotazione.*', 'giornata.data', 'giornata.orario', 'prenotazione.id_prenotazione', 'prenotazione.telefono', 'prenotazione.posti_prenotati')
             ->orderBy('giornata.data', 'desc')
             ->get();
 
@@ -60,7 +60,7 @@ class Dashboard extends Controller
                             DB::table('giornata')->insert([
                                 'data' => $date,
                                 'orario' => $o,
-                                'posti_liberi' => 1, // 1 disponibile, 0 non disponibile
+                                'libera' => 1, // 1 disponibile, 0 non disponibile
                             ]);
                         }
                     }
@@ -75,7 +75,7 @@ class Dashboard extends Controller
             DB::table('giornata')->insert([
                 'data' => $data,
                 'orario' => $orario,
-                'posti_liberi' => 1, // 1 disponibile, 0 non disponibile
+                'libera' => 1, // 1 disponibile, 0 non disponibile
             ]);
         }
         return redirect()->back()->with('success', 'Data aggiunta con successo!');
@@ -93,7 +93,7 @@ class Dashboard extends Controller
 
         // Rimuovi la giornata dal database
         try {
-            $query = DB::table('giornata')->where('data', $data)->where('posti_liberi', 1);
+            $query = DB::table('giornata')->where('data', $data)->where('libera', 1);
 
             if (!empty($orario)) {
                 $query->where('orario', $orario);
@@ -110,7 +110,7 @@ class Dashboard extends Controller
     public function removeAllGiornate()
     {
         try {
-            DB::table('giornata')->where('posti_liberi', 1)->delete();
+            DB::table('giornata')->where('libera', 1)->delete();
         } catch (Exception $e) {
             return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione di tutte le date.']);
         }
@@ -132,7 +132,7 @@ class Dashboard extends Controller
             if ($giornateCoinvolte->isNotEmpty()) {
                 DB::table('giornata')
                     ->whereIn('id_giornata', $giornateCoinvolte)
-                    ->update(['posti_liberi' => 1]);
+                    ->update(['libera' => 1]);
             }
         } catch (Exception $e) {
             return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione di tutte le prenotazioni.']);
@@ -154,7 +154,7 @@ class Dashboard extends Controller
 
                 if ($prenotazione) {
                     DB::table('prenotazione')->where('id_prenotazione', $id_prenotazione)->delete();
-                    DB::table('giornata')->where('id_giornata', $prenotazione->id_giornata)->update(['posti_liberi' => 1]);
+                    DB::table('giornata')->where('id_giornata', $prenotazione->id_giornata)->update(['libera' => 1]);
                 }
             }
         } catch (Exception $e) {
@@ -179,7 +179,7 @@ class Dashboard extends Controller
     {
         $prenotazioni = DB::table('prenotazione')
             ->join('giornata', 'prenotazione.id_giornata', '=', 'giornata.id_giornata')
-            ->select('prenotazione.nome', 'prenotazione.cognome', 'prenotazione.email', 'prenotazione.numero', 'giornata.data', 'giornata.orario', 'prenotazione.posti_prenotati')
+            ->select('prenotazione.nome', 'prenotazione.cognome', 'prenotazione.email', 'prenotazione.telefono', 'giornata.data', 'giornata.orario', 'prenotazione.posti_prenotati')
             ->orderBy('giornata.data', 'desc')
             ->get();
 
@@ -190,7 +190,7 @@ class Dashboard extends Controller
         $csvData = "Nome,Cognome,Email,Numero di Telefono,Data,Orario,Posti Prenotati\n";
 
         foreach ($prenotazioni as $prenotazione) {
-            $csvData .= "$prenotazione->nome,$prenotazione->cognome,$prenotazione->email,$prenotazione->numero,$prenotazione->data,$prenotazione->orario,$prenotazione->posti_prenotati\n";
+            $csvData .= "$prenotazione->nome,$prenotazione->cognome,$prenotazione->email,$prenotazione->telefono,$prenotazione->data,$prenotazione->orario,$prenotazione->posti_prenotati\n";
         }
 
         return response()->streamDownload(function () use ($csvData) {

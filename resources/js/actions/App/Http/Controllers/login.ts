@@ -138,7 +138,7 @@ db.form = dbForm
 
 /**
 * @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:98
+* @see app/Http/Controllers/login.php:103
 * @route '/signup'
 */
 export const signup = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -153,7 +153,7 @@ signup.definition = {
 
 /**
 * @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:98
+* @see app/Http/Controllers/login.php:103
 * @route '/signup'
 */
 signup.url = (options?: RouteQueryOptions) => {
@@ -162,7 +162,7 @@ signup.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:98
+* @see app/Http/Controllers/login.php:103
 * @route '/signup'
 */
 signup.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -172,7 +172,7 @@ signup.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:98
+* @see app/Http/Controllers/login.php:103
 * @route '/signup'
 */
 signup.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -182,7 +182,7 @@ signup.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:98
+* @see app/Http/Controllers/login.php:103
 * @route '/signup'
 */
 const signupForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -192,7 +192,7 @@ const signupForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => 
 
 /**
 * @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:98
+* @see app/Http/Controllers/login.php:103
 * @route '/signup'
 */
 signupForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -202,7 +202,7 @@ signupForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:98
+* @see app/Http/Controllers/login.php:103
 * @route '/signup'
 */
 signupForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

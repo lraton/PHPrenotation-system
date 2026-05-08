@@ -102,7 +102,7 @@
                                 <span class="badge">{{ $prenotazione->posti_prenotati }} Persone</span>
                                 <strong>{{ $prenotazione->nome }} {{ $prenotazione->cognome }}</strong>
                                 <small>{{ $prenotazione->data }} alle {{ $prenotazione->orario }}</small>
-                                <span class="contact-info">{{ $prenotazione->numero }} -
+                                <span class="contact-info">{{ $prenotazione->telefono }} -
                                     {{ $prenotazione->email }}</span>
                             </div>
                         </li>
