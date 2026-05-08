@@ -1,0 +1,222 @@
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../wayfinder'
+/**
+* @see \App\Http\Controllers\HandlePrenotation::index
+* @see app/Http/Controllers/HandlePrenotation.php:27
+* @route '/'
+*/
+export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: index.url(options),
+    method: 'get',
+})
+
+index.definition = {
+    methods: ["get","head"],
+    url: '/',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::index
+* @see app/Http/Controllers/HandlePrenotation.php:27
+* @route '/'
+*/
+index.url = (options?: RouteQueryOptions) => {
+    return index.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::index
+* @see app/Http/Controllers/HandlePrenotation.php:27
+* @route '/'
+*/
+index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: index.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::index
+* @see app/Http/Controllers/HandlePrenotation.php:27
+* @route '/'
+*/
+index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: index.url(options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::index
+* @see app/Http/Controllers/HandlePrenotation.php:27
+* @route '/'
+*/
+const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::index
+* @see app/Http/Controllers/HandlePrenotation.php:27
+* @route '/'
+*/
+indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::index
+* @see app/Http/Controllers/HandlePrenotation.php:27
+* @route '/'
+*/
+indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+index.form = indexForm
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::selezione
+* @see app/Http/Controllers/HandlePrenotation.php:69
+* @route '/selezione'
+*/
+export const selezione = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: selezione.url(options),
+    method: 'get',
+})
+
+selezione.definition = {
+    methods: ["get","head"],
+    url: '/selezione',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::selezione
+* @see app/Http/Controllers/HandlePrenotation.php:69
+* @route '/selezione'
+*/
+selezione.url = (options?: RouteQueryOptions) => {
+    return selezione.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::selezione
+* @see app/Http/Controllers/HandlePrenotation.php:69
+* @route '/selezione'
+*/
+selezione.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: selezione.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::selezione
+* @see app/Http/Controllers/HandlePrenotation.php:69
+* @route '/selezione'
+*/
+selezione.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: selezione.url(options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::selezione
+* @see app/Http/Controllers/HandlePrenotation.php:69
+* @route '/selezione'
+*/
+const selezioneForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: selezione.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::selezione
+* @see app/Http/Controllers/HandlePrenotation.php:69
+* @route '/selezione'
+*/
+selezioneForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: selezione.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::selezione
+* @see app/Http/Controllers/HandlePrenotation.php:69
+* @route '/selezione'
+*/
+selezioneForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: selezione.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+selezione.form = selezioneForm
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::prenota
+* @see app/Http/Controllers/HandlePrenotation.php:95
+* @route '/prenotazione'
+*/
+export const prenota = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: prenota.url(options),
+    method: 'post',
+})
+
+prenota.definition = {
+    methods: ["post"],
+    url: '/prenotazione',
+} satisfies RouteDefinition<["post"]>
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::prenota
+* @see app/Http/Controllers/HandlePrenotation.php:95
+* @route '/prenotazione'
+*/
+prenota.url = (options?: RouteQueryOptions) => {
+    return prenota.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::prenota
+* @see app/Http/Controllers/HandlePrenotation.php:95
+* @route '/prenotazione'
+*/
+prenota.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: prenota.url(options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::prenota
+* @see app/Http/Controllers/HandlePrenotation.php:95
+* @route '/prenotazione'
+*/
+const prenotaForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: prenota.url(options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::prenota
+* @see app/Http/Controllers/HandlePrenotation.php:95
+* @route '/prenotazione'
+*/
+prenotaForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: prenota.url(options),
+    method: 'post',
+})
+
+prenota.form = prenotaForm
+
+const HandlePrenotation = { index, selezione, prenota }
+
+export default HandlePrenotation

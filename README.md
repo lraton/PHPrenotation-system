@@ -14,25 +14,33 @@
 
 ---
 
-## 📂 Current File Structure
+## Start
+
+
+1. Start the Docker Compose Services:
+
+```bash
+docker compose -f compose.dev.yaml up -d
 ```
-/phprenotation-system/
-├── index.php # Main monolithic entry point
-├── selezione.php # Second monolithic
-├── prenotazione.php # Third monolithic
-├── concluso.php # Fourth monolithic
-├── db.php # DB configuration
-├── admin.html # admin login
-├── admin.php # admin
-├── cancellaprenotazione.php # admin remove prenotation
-├── db.php # DB configuration
-├── assets/
-│   ├── style/ # CSS folder
-│   └── img/ # Image assets
-├── controllers/
-├── includes/
-└── views/
+
+2. Install Laravel Dependencies:
+
+```bash
+docker compose -f compose.dev.yaml exec workspace bash
+composer install
+npm install
+npm run dev
 ```
+
+3. Run Migrations:
+
+```bash
+docker compose -f compose.dev.yaml exec workspace php artisan migrate
+```
+
+4. Access the Application:
+
+Open your browser and navigate to [http://localhost](http://localhost).
 
 ---
 
