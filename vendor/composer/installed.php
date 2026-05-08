@@ -3,7 +3,7 @@
         'name' => 'laravel/blank-vue-starter-kit',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'ba74d7bd53c16ae3479e2dff9075ea73f8c96096',
+        'reference' => '3f569f60032fd1f2bcde6644ae72ef95c05ff985',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -409,7 +409,7 @@
         'laravel/blank-vue-starter-kit' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'ba74d7bd53c16ae3479e2dff9075ea73f8c96096',
+            'reference' => '3f569f60032fd1f2bcde6644ae72ef95c05ff985',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

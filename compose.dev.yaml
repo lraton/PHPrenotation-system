@@ -63,7 +63,6 @@ services:
       - '${VITE_PORT:-5173}:5173'
     tty: true # Enables an interactive terminal
     stdin_open: true # Keeps standard input open for 'docker exec'
-    command: bash -c "composer install && npm install && npm run dev"
     env_file:
       - .env
     volumes:
