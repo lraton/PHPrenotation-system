@@ -92,9 +92,10 @@
 
         <!-- LISTA SOTTO -->
         <section class="booking-list">
-            <details open>
-                <summary>Lista Prenotazioni</summary>
-                <form method="POST" action="{{ route('rimuovi-prenotazione') }}" id="main-booking-form">
+
+            <form method="POST" action="{{ route('rimuovi-prenotazione') }}" id="main-booking-form">
+                <details open>
+                    <summary>Lista Prenotazioni</summary>
                     @csrf
                     <ul class="scrollable-list">
                         @foreach ($prenotazioni as $prenotazione)
@@ -102,14 +103,15 @@
                                 <input type="checkbox" name="prenotazioni[]"
                                     value="{{ $prenotazione->id_prenotazione }}">
                                 <div class="booking-info">
-                                    <span class="badge">{{ $prenotazione->posti_prenotati }} Persone</span>
+                                    <span class="badge-people">{{ $prenotazione->posti_prenotati }} Persone</span>
                                     <strong>{{ $prenotazione->nome }} {{ $prenotazione->cognome }}</strong>
                                     <small>{{ $prenotazione->data }} alle {{ $prenotazione->orario }}</small>
                                     <span class="contact-info">{{ $prenotazione->telefono }} -
                                         {{ $prenotazione->email }}</span>
                                 </div>
                                 <div class="booking-info" style="margin-left:auto;">
-                                    <span class="badge" style="background:{{ $prenotazione->conferma ? '#38a169' : '#e53e3e' }};">
+                                    <span class="badge"
+                                        style="background:{{ $prenotazione->conferma ? '#38a169' : '#e53e3e' }}; color:white;">
                                         {{ $prenotazione->conferma ? 'Confermato' : 'Non confermato' }}
                                     </span>
                                 </div>
@@ -117,20 +119,85 @@
                         @endforeach
                     </ul>
 
-                    <div class="actions-footer">
-                        <button class="csv-button large-btn" type="submit" formaction="{{ route('esporta-csv') }}">
-                            📥 Esporta in CSV
-                        </button>
-                        <div class="danger-zone-inline">
-                            <button class="delete-btn-sm" type="submit" onclick="return confirm('Sicuro?')">Elimina
-                                Selezionate</button>
-                            <button class="delete-btn-sm" type="submit"
-                                formaction="{{ route('rimuovi-tutte-prenotazioni') }}"
-                                onclick="return confirm('Sicuro?')">Svuota Lista</button>
-                        </div>
+                </details>
+
+                <div class="actions-footer">
+                    <button class="csv-button large-btn" type="submit" formaction="{{ route('esporta-pdf') }}">
+                        📥 Esporta prenotazioni in PDF
+                    </button>
+                    <div class="danger-zone-inline">
+                        <button class="delete-btn-sm" type="submit" onclick="return confirm('Sicuro?')">Elimina
+                            prenotazioni
+                            selezionate</button>
+                        <button class="delete-btn-sm" type="submit"
+                            formaction="{{ route('rimuovi-tutte-prenotazioni') }}"
+                            onclick="return confirm('Sicuro?')">Elimina tutte le prenotazioni</button>
                     </div>
-                </form>
-            </details>
+                </div>
+            </form>
+
+        </section>
+
+        <!-- LISTA SOTTO -->
+        <section class="booking-list">
+            <form method="POST" action="{{ route('rimuovi-giornate') }}" id="main-booking-form">
+
+                <details>
+                    <summary>{{ count($giornate) }} Giornate Totali,
+                        {{ $giornate->map(fn($g) => $g->where('libera', true)->count())->sum() }} Orari Liberi,
+                        {{ $giornate->map(fn($g) => $g->where('libera', false)->count())->sum() }} Orari Prenotati
+                        <!-- <span class="badge">{{ count($giornate) }} giornate</span> -->
+
+                    </summary>
+                    @csrf
+
+                    @foreach ($giornate as $data => $orari)
+                        <details class="date-group"
+                            style="margin-bottom: 1rem; border: 1px solid #ddd; padding: 10px; border-radius: 8px;">
+                            <summary class="summary-flex"
+                                style="cursor: pointer; font-weight: bold; font-size: 1.1rem;">
+                                <div div class="summary-content">
+                                    Data: {{ \Carbon\Carbon::parse($data)->format('d/m/Y') }}
+                                    <small>({{ $orari->where('libera', true)->count() }} orari liberi -</small>
+                                    <small>{{ $orari->where('libera', false)->count() }} orari prenotati)</small>
+                                </div>
+                                <input type="checkbox" class="select-all-group" onclick="toggleGroup(this, event)">
+                            </summary>
+
+                            <ul class="scrollable-list" style="margin-top: 10px; list-style: none; padding-left: 0;">
+                                @foreach ($orari as $giorni)
+                                    <li>
+                                        <input type="checkbox" name="giornate[]" class="child-checkbox"
+                                            value="{{ $giorni->id_giornata }}">
+
+                                        <div class="booking-info" style="margin-left: 10px;">
+                                            <strong>{{ $giorni->orario }}</strong>
+                                        </div>
+
+                                        <div class="booking-info" style="margin-left:auto;">
+                                            <span class="badge"
+                                                style="background:{{ $giorni->libera ? '#38a169' : '#e53e3e' }}; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">
+                                                {{ $giorni->libera ? 'Disponibile' : 'Prenotata' }}
+                                            </span>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </details>
+                    @endforeach
+                </details>
+                <div class="actions-footer">
+                    <div class="danger-zone-inline">
+                        <button class="delete-btn-sm" type="submit" onclick="return confirm('Sicuro?')">Elimina
+                            giornate
+                            Selezionate</button>
+                        <button class="delete-btn-sm" type="submit"
+                            formaction="{{ route('rimuovi-tutte-giornate') }}"
+                            onclick="return confirm('Sicuro?')">Elimina tutte le giornate</button>
+                    </div>
+                </div>
+            </form>
+
         </section>
     </div>
 </body>
@@ -158,86 +225,139 @@
         div.appendChild(removeBtn);
         wrapper.appendChild(div);
     });
+
+    function toggleGroup(source, event) {
+        // Evita che il click sulla checkbox apra/chiuda il <details>
+        event.stopPropagation();
+
+        // Trova il contenitore <details> più vicino
+        const parentDetails = source.closest('details');
+
+        // Seleziona tutte le checkbox con classe 'child-checkbox' dentro questo specifico details
+        const checkboxes = parentDetails.querySelectorAll('.child-checkbox');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = source.checked;
+        });
+    }
 </script>
 
 <style>
     :root {
+        /* Colori Brand & UI */
         --bg: #f5f7fb;
         --card: #ffffff;
         --accent: #2b6cb0;
-        --muted: #6b7280;
+        --accent-hover: #23568d;
+        --text-main: #111827;
+        --text-muted: #6b7280;
+        --border-color: #e2e8f0;
+        --input-border: #dbe3ee;
+
+        /* Colori Semantici */
+        --success: #38a169;
+        --success-hover: #2f855a;
+        --danger: #e53e3e;
+        --danger-light: #feb2b2;
+        --danger-dark: #9b2c2c;
+        --ghost-bg: #edf2f7;
+        --ghost-text: #4a5568;
+
+        /* Spaziature (Padding/Gaps) */
+        --space-xs: 8px;
+        --space-sm: 12px;
+        --space-md: 16px;
+        --space-lg: 24px;
+        --space-xl: 28px;
+
+        /* Bordi e Ombre */
+        --radius-sm: 4px;
+        --radius-md: 6px;
+        --radius-lg: 10px;
         --shadow: 0 4px 12px rgba(32, 33, 36, 0.08);
-        --radius: 10px;
+
+        /* Layout */
+        --top-bar-height: 60px;
+        --max-width: 1200px;
     }
 
+    /* Reset & Base */
     * {
-        box-sizing: border-box
+        box-sizing: border-box;
     }
 
     body {
         margin: 0;
-        font-family: Inter, sans-serif;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
         background: var(--bg);
-        color: #111;
-        padding-top: 60px;
-        /* Spazio per la top-bar */
+        color: var(--text-main);
+        padding-top: var(--top-bar-height);
+        line-height: 1.5;
     }
 
-    /* Top Bar e Logout */
+    /* Top Bar */
     .top-bar {
         position: absolute;
         top: 0;
-        right: 0;
         left: 0;
-        height: 60px;
+        right: 0;
+        height: var(--top-bar-height);
         display: flex;
         justify-content: flex-end;
         align-items: center;
-        padding: 0 24px;
+        padding: 0 var(--space-lg);
         z-index: 100;
     }
 
     .logout-button-top {
-        background: #e53e3e;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-        margin-right: 10px;
+        background: var(--danger);
     }
 
-    .darkmode-button-top {
-        background: #2b6cb0;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
+    .logout-button-top,
+    {
+    color: white;
+    border: none;
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: opacity 0.2s;
     }
+
+    .logout-button-top:hover,
+    {
+    opacity: 0.9;
+    }
+
 
     /* Layout Principale */
     .dashboard-layout {
-        max-width: 1200px;
+        max-width: var(--max-width);
         margin: 0 auto;
-        padding: 0 24px 24px 24px;
+        padding: 0 var(--space-lg) var(--space-lg);
         display: flex;
         flex-direction: column;
-        /* Cambiato da Row a Column */
-        gap: 24px;
+        gap: var(--space-lg);
     }
 
-    /* Aside modificata in Orizzontale */
-    .booking-form-card {
-        width: 100%;
+    /* Cards */
+    .booking-form-card,
+    .booking-list {
         background: var(--card);
-        padding: 20px;
-        border-radius: var(--radius);
+        border-radius: var(--radius-lg);
         box-shadow: var(--shadow);
     }
 
+    .booking-form-card {
+        padding: 20px;
+    }
+
+    .booking-list {
+        padding: var(--space-xl);
+    }
+
+    /* Forms & Admin Section */
     .admin-section-horizontal {
         display: flex;
         flex-direction: column;
@@ -248,8 +368,9 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: var(--space-xs);
+        margin-bottom: var(--space-md);
     }
 
     .forms-row {
@@ -261,22 +382,13 @@
     .forms-row details {
         flex: 1;
         min-width: 250px;
-        margin-bottom: 0;
     }
 
-    /* Lista Prenotazioni */
-    .booking-list {
-        background: var(--card);
-        padding: 28px;
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-    }
-
-    /* Elementi comuni */
+    /* Tipografia */
     h1 {
-        margin: 0 0 8px;
+        margin: 0 0 var(--space-xs);
         font-size: 28px;
-        color: var(--accent)
+        color: var(--accent);
     }
 
     h3 {
@@ -287,24 +399,30 @@
 
     p {
         margin: 0 0 18px;
-        color: var(--muted)
+        color: var(--text-muted);
     }
 
+    /* Liste Prenotazioni */
     ul {
         list-style: none;
         padding: 0;
-        margin: 0
+        margin: 0;
     }
 
     li {
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 12px 14px;
-        border: 2px solid #e2e8f0;
-        border-radius: 8px;
+        gap: var(--space-sm);
+        padding: var(--space-sm) 14px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--radius-md);
         margin-bottom: 10px;
-        background: #fff;
+        background: var(--card);
+        transition: border-color 0.2s;
+    }
+
+    li:hover {
+        border-color: var(--accent);
     }
 
     li input[type="checkbox"] {
@@ -313,18 +431,20 @@
         width: auto;
     }
 
+    /* Elementi Form */
     form {
         display: flex;
         flex-direction: column;
-        gap: 8px
+        gap: var(--space-xs);
     }
 
     input {
         width: 100%;
-        padding: 8px 10px;
-        border: 1px solid #dbe3ee;
-        border-radius: 6px;
+        padding: var(--space-xs) 10px;
+        border: 1px solid var(--input-border);
+        border-radius: var(--radius-md);
         font-size: 14px;
+        outline-color: var(--accent);
     }
 
     button {
@@ -332,25 +452,41 @@
         padding: 10px 14px;
         background: var(--accent);
         color: #fff;
-        border-radius: 6px;
+        border-radius: var(--radius-md);
         cursor: pointer;
-        font-weight: 600
+        font-weight: 600;
+        transition: background 0.2s;
+    }
+
+    button:hover {
+        background: var(--accent-hover);
     }
 
     .csv-button {
-        background: #38a169;
+        background: var(--success);
         width: 100%;
     }
 
-    .booking-info {
-        display: flex;
-        flex-direction: column;
+    .csv-button:hover {
+        background: var(--success-hover);
+        opacity: 0.9;
     }
 
+    /* Componenti UI */
     .badge {
-        background: #edf2f7;
-        padding: 2px 8px;
-        border-radius: 4px;
+        background: var(--ghost-bg);
+        padding: 2px var(--space-xs);
+        border-radius: var(--radius-sm);
+        font-size: 11px;
+        font-weight: bold;
+        width: fit-content;
+        margin-left:auto;
+    }
+
+    .badge-people {
+        background: var(--ghost-bg);
+        padding: 2px var(--space-xs);
+        border-radius: var(--radius-sm);
         font-size: 11px;
         font-weight: bold;
         width: fit-content;
@@ -358,7 +494,7 @@
 
     .contact-info {
         font-size: 12px;
-        color: var(--muted);
+        color: var(--text-muted);
     }
 
     .actions-footer {
@@ -375,148 +511,91 @@
     }
 
     .delete-btn-sm {
-        background: #feb2b2;
-        color: #9b2c2c;
-        padding: 8px;
+        background: var(--danger-light);
+        color: var(--danger-dark);
+        padding: var(--space-xs);
         font-size: 13px;
+    }
+
+    .delete-btn-sm:hover {
+        background: var(--danger);
     }
 
     details {
         background: #f8fafc;
-        border: 1px solid #edf2f7;
-        border-radius: 6px;
+        border: 1px solid var(--ghost-bg);
+        border-radius: var(--radius-md);
         padding: 10px;
     }
 
     summary {
         font-weight: 600;
         cursor: pointer;
-        margin-bottom: 8px;
+        margin-bottom: var(--space-xs);
         font-size: 14px;
     }
 
     .btn-ghost {
-        background: #edf2f7;
-        color: #4a5568;
+        background: var(--ghost-bg);
+        color: var(--ghost-text);
         font-size: 12px;
     }
 
     .text-btn-danger {
         background: transparent;
-        color: #e53e3e;
+        color: var(--danger);
         font-size: 11px;
         text-decoration: underline;
         padding: 0;
     }
 
     .text-danger {
-        color: #e53e3e;
+        color: var(--danger);
     }
 
-    /* Sovrascrittura variabili per la Dark Mode */
-    body.dark-mode {
-        --bg: #1a202c;
-        /* Sfondo scuro */
-        --card: #2d3748;
-        /* Sfondo card */
-        --accent: #63b3ed;
-        /* Azzurro più chiaro per contrasto */
-        --muted: #a0aec0;
-        /* Testo secondario chiaro */
-        --shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    }
-
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 60px;
-        height: 34px;
-    }
-
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    .slider {
-        position: absolute;
+    /* Flex Helpers */
+    .summary-flex {
+        display: flex;
+        align-items: center;
         cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        -webkit-transition: .4s;
-        transition: .4s;
+        padding-right: 10px;
     }
 
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 26px;
-        width: 26px;
-        left: 4px;
-        bottom: 4px;
-        background-color: white;
-        -webkit-transition: .4s;
-        transition: .4s;
+    .summary-flex::before {
+        content: "▶";
+        display: inline-block;
+        margin-right: 8px;
+        transition: transform 0.2s ease;
     }
 
-    input:checked+.slider {
-        background-color: #2196F3;
+    .date-group[open] .summary-flex::before {
+        transform: rotate(90deg);
     }
 
-    input:focus+.slider {
-        box-shadow: 0 0 1px #2196F3;
+    .summary-flex .select-all-group {
+        margin-left: auto;
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
     }
 
-    input:checked+.slider:before {
-        -webkit-transform: translateX(26px);
-        -ms-transform: translateX(26px);
-        transform: translateX(26px);
+    .summary-flex span {
+        margin-right: 10px;
     }
 
-    /* Rounded sliders */
-    .slider.round {
-        border-radius: 34px;
+    .summary-flex small {
+        color: var(--text-muted);
+        font-weight: normal;
     }
 
-    .slider.round:before {
-        border-radius: 50%;
+    .booking-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
     }
 
-    /* Correzioni specifiche per elementi con colori hardcoded */
-    body.dark-mode {
-        color: #f7fafc;
-    }
-
-    body.dark-mode li {
-        background: #2d3748;
-        border-color: #4a5568;
-    }
-
-    body.dark-mode input {
-        background: #1a202c;
-        color: white;
-        border-color: #4a5568;
-    }
-
-    body.dark-mode details {
-        background: #2d3748;
-        border-color: #4a5568;
-    }
-
-    body.dark-mode .btn-ghost {
-        background: #4a5568;
-        color: #edf2f7;
-    }
-
-    body.dark-mode .badge {
-        background: #4a5568;
-        color: #e2e8f0;
-    }
-
+    /* Responsive */
     @media (max-width: 768px) {
         .forms-row {
             flex-direction: column;
@@ -526,10 +605,19 @@
             position: relative;
             justify-content: center;
             padding: 10px;
+            height: auto;
         }
 
         body {
             padding-top: 0;
+        }
+
+        .dashboard-layout {
+            padding: var(--space-md);
+        }
+
+        .danger-zone-inline {
+            grid-template-columns: 1fr;
         }
     }
 </style>

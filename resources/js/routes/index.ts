@@ -82,7 +82,7 @@ home.form = homeForm
 
 /**
 * @see \App\Http\Controllers\Dashboard::aggiungiGiornate
-* @see app/Http/Controllers/Dashboard.php:38
+* @see app/Http/Controllers/Dashboard.php:50
 * @route '/aggiungi-giornate'
 */
 export const aggiungiGiornate = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -97,7 +97,7 @@ aggiungiGiornate.definition = {
 
 /**
 * @see \App\Http\Controllers\Dashboard::aggiungiGiornate
-* @see app/Http/Controllers/Dashboard.php:38
+* @see app/Http/Controllers/Dashboard.php:50
 * @route '/aggiungi-giornate'
 */
 aggiungiGiornate.url = (options?: RouteQueryOptions) => {
@@ -106,7 +106,7 @@ aggiungiGiornate.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Dashboard::aggiungiGiornate
-* @see app/Http/Controllers/Dashboard.php:38
+* @see app/Http/Controllers/Dashboard.php:50
 * @route '/aggiungi-giornate'
 */
 aggiungiGiornate.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -116,7 +116,7 @@ aggiungiGiornate.post = (options?: RouteQueryOptions): RouteDefinition<'post'> =
 
 /**
 * @see \App\Http\Controllers\Dashboard::aggiungiGiornate
-* @see app/Http/Controllers/Dashboard.php:38
+* @see app/Http/Controllers/Dashboard.php:50
 * @route '/aggiungi-giornate'
 */
 const aggiungiGiornateForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -126,7 +126,7 @@ const aggiungiGiornateForm = (options?: RouteQueryOptions): RouteFormDefinition<
 
 /**
 * @see \App\Http\Controllers\Dashboard::aggiungiGiornate
-* @see app/Http/Controllers/Dashboard.php:38
+* @see app/Http/Controllers/Dashboard.php:50
 * @route '/aggiungi-giornate'
 */
 aggiungiGiornateForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -138,7 +138,7 @@ aggiungiGiornate.form = aggiungiGiornateForm
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviGiornate
-* @see app/Http/Controllers/Dashboard.php:84
+* @see app/Http/Controllers/Dashboard.php:96
 * @route '/rimuovi-giornate'
 */
 export const rimuoviGiornate = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -153,7 +153,7 @@ rimuoviGiornate.definition = {
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviGiornate
-* @see app/Http/Controllers/Dashboard.php:84
+* @see app/Http/Controllers/Dashboard.php:96
 * @route '/rimuovi-giornate'
 */
 rimuoviGiornate.url = (options?: RouteQueryOptions) => {
@@ -162,7 +162,7 @@ rimuoviGiornate.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviGiornate
-* @see app/Http/Controllers/Dashboard.php:84
+* @see app/Http/Controllers/Dashboard.php:96
 * @route '/rimuovi-giornate'
 */
 rimuoviGiornate.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -172,7 +172,7 @@ rimuoviGiornate.post = (options?: RouteQueryOptions): RouteDefinition<'post'> =>
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviGiornate
-* @see app/Http/Controllers/Dashboard.php:84
+* @see app/Http/Controllers/Dashboard.php:96
 * @route '/rimuovi-giornate'
 */
 const rimuoviGiornateForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -182,7 +182,7 @@ const rimuoviGiornateForm = (options?: RouteQueryOptions): RouteFormDefinition<'
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviGiornate
-* @see app/Http/Controllers/Dashboard.php:84
+* @see app/Http/Controllers/Dashboard.php:96
 * @route '/rimuovi-giornate'
 */
 rimuoviGiornateForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -194,7 +194,7 @@ rimuoviGiornate.form = rimuoviGiornateForm
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviTutteGiornate
-* @see app/Http/Controllers/Dashboard.php:110
+* @see app/Http/Controllers/Dashboard.php:132
 * @route '/rimuovi-tutte-giornate'
 */
 export const rimuoviTutteGiornate = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -209,7 +209,7 @@ rimuoviTutteGiornate.definition = {
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviTutteGiornate
-* @see app/Http/Controllers/Dashboard.php:110
+* @see app/Http/Controllers/Dashboard.php:132
 * @route '/rimuovi-tutte-giornate'
 */
 rimuoviTutteGiornate.url = (options?: RouteQueryOptions) => {
@@ -218,7 +218,7 @@ rimuoviTutteGiornate.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviTutteGiornate
-* @see app/Http/Controllers/Dashboard.php:110
+* @see app/Http/Controllers/Dashboard.php:132
 * @route '/rimuovi-tutte-giornate'
 */
 rimuoviTutteGiornate.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -228,7 +228,7 @@ rimuoviTutteGiornate.post = (options?: RouteQueryOptions): RouteDefinition<'post
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviTutteGiornate
-* @see app/Http/Controllers/Dashboard.php:110
+* @see app/Http/Controllers/Dashboard.php:132
 * @route '/rimuovi-tutte-giornate'
 */
 const rimuoviTutteGiornateForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -238,7 +238,7 @@ const rimuoviTutteGiornateForm = (options?: RouteQueryOptions): RouteFormDefinit
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviTutteGiornate
-* @see app/Http/Controllers/Dashboard.php:110
+* @see app/Http/Controllers/Dashboard.php:132
 * @route '/rimuovi-tutte-giornate'
 */
 rimuoviTutteGiornateForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -250,7 +250,7 @@ rimuoviTutteGiornate.form = rimuoviTutteGiornateForm
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviTuttePrenotazioni
-* @see app/Http/Controllers/Dashboard.php:120
+* @see app/Http/Controllers/Dashboard.php:142
 * @route '/rimuovi-tutte-prenotazioni'
 */
 export const rimuoviTuttePrenotazioni = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -265,7 +265,7 @@ rimuoviTuttePrenotazioni.definition = {
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviTuttePrenotazioni
-* @see app/Http/Controllers/Dashboard.php:120
+* @see app/Http/Controllers/Dashboard.php:142
 * @route '/rimuovi-tutte-prenotazioni'
 */
 rimuoviTuttePrenotazioni.url = (options?: RouteQueryOptions) => {
@@ -274,7 +274,7 @@ rimuoviTuttePrenotazioni.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviTuttePrenotazioni
-* @see app/Http/Controllers/Dashboard.php:120
+* @see app/Http/Controllers/Dashboard.php:142
 * @route '/rimuovi-tutte-prenotazioni'
 */
 rimuoviTuttePrenotazioni.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -284,7 +284,7 @@ rimuoviTuttePrenotazioni.post = (options?: RouteQueryOptions): RouteDefinition<'
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviTuttePrenotazioni
-* @see app/Http/Controllers/Dashboard.php:120
+* @see app/Http/Controllers/Dashboard.php:142
 * @route '/rimuovi-tutte-prenotazioni'
 */
 const rimuoviTuttePrenotazioniForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -294,7 +294,7 @@ const rimuoviTuttePrenotazioniForm = (options?: RouteQueryOptions): RouteFormDef
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviTuttePrenotazioni
-* @see app/Http/Controllers/Dashboard.php:120
+* @see app/Http/Controllers/Dashboard.php:142
 * @route '/rimuovi-tutte-prenotazioni'
 */
 rimuoviTuttePrenotazioniForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -306,7 +306,7 @@ rimuoviTuttePrenotazioni.form = rimuoviTuttePrenotazioniForm
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviTutto
-* @see app/Http/Controllers/Dashboard.php:167
+* @see app/Http/Controllers/Dashboard.php:189
 * @route '/rimuovi-tutto'
 */
 export const rimuoviTutto = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -321,7 +321,7 @@ rimuoviTutto.definition = {
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviTutto
-* @see app/Http/Controllers/Dashboard.php:167
+* @see app/Http/Controllers/Dashboard.php:189
 * @route '/rimuovi-tutto'
 */
 rimuoviTutto.url = (options?: RouteQueryOptions) => {
@@ -330,7 +330,7 @@ rimuoviTutto.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviTutto
-* @see app/Http/Controllers/Dashboard.php:167
+* @see app/Http/Controllers/Dashboard.php:189
 * @route '/rimuovi-tutto'
 */
 rimuoviTutto.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -340,7 +340,7 @@ rimuoviTutto.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviTutto
-* @see app/Http/Controllers/Dashboard.php:167
+* @see app/Http/Controllers/Dashboard.php:189
 * @route '/rimuovi-tutto'
 */
 const rimuoviTuttoForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -350,7 +350,7 @@ const rimuoviTuttoForm = (options?: RouteQueryOptions): RouteFormDefinition<'pos
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviTutto
-* @see app/Http/Controllers/Dashboard.php:167
+* @see app/Http/Controllers/Dashboard.php:189
 * @route '/rimuovi-tutto'
 */
 rimuoviTuttoForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -361,64 +361,64 @@ rimuoviTuttoForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post
 rimuoviTutto.form = rimuoviTuttoForm
 
 /**
-* @see \App\Http\Controllers\Dashboard::esportaCsv
-* @see app/Http/Controllers/Dashboard.php:178
-* @route '/esporta-csv'
+* @see \App\Http\Controllers\Dashboard::esportaPdf
+* @see app/Http/Controllers/Dashboard.php:200
+* @route '/esporta-pdf'
 */
-export const esportaCsv = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: esportaCsv.url(options),
+export const esportaPdf = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: esportaPdf.url(options),
     method: 'post',
 })
 
-esportaCsv.definition = {
+esportaPdf.definition = {
     methods: ["post"],
-    url: '/esporta-csv',
+    url: '/esporta-pdf',
 } satisfies RouteDefinition<["post"]>
 
 /**
-* @see \App\Http\Controllers\Dashboard::esportaCsv
-* @see app/Http/Controllers/Dashboard.php:178
-* @route '/esporta-csv'
+* @see \App\Http\Controllers\Dashboard::esportaPdf
+* @see app/Http/Controllers/Dashboard.php:200
+* @route '/esporta-pdf'
 */
-esportaCsv.url = (options?: RouteQueryOptions) => {
-    return esportaCsv.definition.url + queryParams(options)
+esportaPdf.url = (options?: RouteQueryOptions) => {
+    return esportaPdf.definition.url + queryParams(options)
 }
 
 /**
-* @see \App\Http\Controllers\Dashboard::esportaCsv
-* @see app/Http/Controllers/Dashboard.php:178
-* @route '/esporta-csv'
+* @see \App\Http\Controllers\Dashboard::esportaPdf
+* @see app/Http/Controllers/Dashboard.php:200
+* @route '/esporta-pdf'
 */
-esportaCsv.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
-    url: esportaCsv.url(options),
+esportaPdf.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+    url: esportaPdf.url(options),
     method: 'post',
 })
 
 /**
-* @see \App\Http\Controllers\Dashboard::esportaCsv
-* @see app/Http/Controllers/Dashboard.php:178
-* @route '/esporta-csv'
+* @see \App\Http\Controllers\Dashboard::esportaPdf
+* @see app/Http/Controllers/Dashboard.php:200
+* @route '/esporta-pdf'
 */
-const esportaCsvForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: esportaCsv.url(options),
+const esportaPdfForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: esportaPdf.url(options),
     method: 'post',
 })
 
 /**
-* @see \App\Http\Controllers\Dashboard::esportaCsv
-* @see app/Http/Controllers/Dashboard.php:178
-* @route '/esporta-csv'
+* @see \App\Http\Controllers\Dashboard::esportaPdf
+* @see app/Http/Controllers/Dashboard.php:200
+* @route '/esporta-pdf'
 */
-esportaCsvForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: esportaCsv.url(options),
+esportaPdfForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: esportaPdf.url(options),
     method: 'post',
 })
 
-esportaCsv.form = esportaCsvForm
+esportaPdf.form = esportaPdfForm
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviPrenotazione
-* @see app/Http/Controllers/Dashboard.php:143
+* @see app/Http/Controllers/Dashboard.php:165
 * @route '/rimuovi-prenotazione'
 */
 export const rimuoviPrenotazione = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -433,7 +433,7 @@ rimuoviPrenotazione.definition = {
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviPrenotazione
-* @see app/Http/Controllers/Dashboard.php:143
+* @see app/Http/Controllers/Dashboard.php:165
 * @route '/rimuovi-prenotazione'
 */
 rimuoviPrenotazione.url = (options?: RouteQueryOptions) => {
@@ -442,7 +442,7 @@ rimuoviPrenotazione.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviPrenotazione
-* @see app/Http/Controllers/Dashboard.php:143
+* @see app/Http/Controllers/Dashboard.php:165
 * @route '/rimuovi-prenotazione'
 */
 rimuoviPrenotazione.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -452,7 +452,7 @@ rimuoviPrenotazione.post = (options?: RouteQueryOptions): RouteDefinition<'post'
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviPrenotazione
-* @see app/Http/Controllers/Dashboard.php:143
+* @see app/Http/Controllers/Dashboard.php:165
 * @route '/rimuovi-prenotazione'
 */
 const rimuoviPrenotazioneForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -462,7 +462,7 @@ const rimuoviPrenotazioneForm = (options?: RouteQueryOptions): RouteFormDefiniti
 
 /**
 * @see \App\Http\Controllers\Dashboard::rimuoviPrenotazione
-* @see app/Http/Controllers/Dashboard.php:143
+* @see app/Http/Controllers/Dashboard.php:165
 * @route '/rimuovi-prenotazione'
 */
 rimuoviPrenotazioneForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -555,7 +555,7 @@ cancellaPrenotazione.form = cancellaPrenotazioneForm
 
 /**
 * @see \App\Http\Controllers\Dashboard::confermaPrenotazione
-* @see app/Http/Controllers/Dashboard.php:203
+* @see app/Http/Controllers/Dashboard.php:222
 * @route '/conferma-prenotazione'
 */
 export const confermaPrenotazione = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -570,7 +570,7 @@ confermaPrenotazione.definition = {
 
 /**
 * @see \App\Http\Controllers\Dashboard::confermaPrenotazione
-* @see app/Http/Controllers/Dashboard.php:203
+* @see app/Http/Controllers/Dashboard.php:222
 * @route '/conferma-prenotazione'
 */
 confermaPrenotazione.url = (options?: RouteQueryOptions) => {
@@ -579,7 +579,7 @@ confermaPrenotazione.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Dashboard::confermaPrenotazione
-* @see app/Http/Controllers/Dashboard.php:203
+* @see app/Http/Controllers/Dashboard.php:222
 * @route '/conferma-prenotazione'
 */
 confermaPrenotazione.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -589,7 +589,7 @@ confermaPrenotazione.get = (options?: RouteQueryOptions): RouteDefinition<'get'>
 
 /**
 * @see \App\Http\Controllers\Dashboard::confermaPrenotazione
-* @see app/Http/Controllers/Dashboard.php:203
+* @see app/Http/Controllers/Dashboard.php:222
 * @route '/conferma-prenotazione'
 */
 confermaPrenotazione.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -599,7 +599,7 @@ confermaPrenotazione.head = (options?: RouteQueryOptions): RouteDefinition<'head
 
 /**
 * @see \App\Http\Controllers\Dashboard::confermaPrenotazione
-* @see app/Http/Controllers/Dashboard.php:203
+* @see app/Http/Controllers/Dashboard.php:222
 * @route '/conferma-prenotazione'
 */
 const confermaPrenotazioneForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -609,7 +609,7 @@ const confermaPrenotazioneForm = (options?: RouteQueryOptions): RouteFormDefinit
 
 /**
 * @see \App\Http\Controllers\Dashboard::confermaPrenotazione
-* @see app/Http/Controllers/Dashboard.php:203
+* @see app/Http/Controllers/Dashboard.php:222
 * @route '/conferma-prenotazione'
 */
 confermaPrenotazioneForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -619,7 +619,7 @@ confermaPrenotazioneForm.get = (options?: RouteQueryOptions): RouteFormDefinitio
 
 /**
 * @see \App\Http\Controllers\Dashboard::confermaPrenotazione
-* @see app/Http/Controllers/Dashboard.php:203
+* @see app/Http/Controllers/Dashboard.php:222
 * @route '/conferma-prenotazione'
 */
 confermaPrenotazioneForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

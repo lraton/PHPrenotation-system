@@ -66,7 +66,7 @@ services:
     tty: true # Enables an interactive terminal
     stdin_open: true # Keeps standard input open for 'docker exec'
     extra_hosts:
-      - "host.docker.internal:host-gateway" # <--- AGGIUNGI QUESTO
+      - "host.docker.internal:host-gateway"
     env_file:
       - .env
     volumes:
@@ -82,7 +82,7 @@ services:
     user: "${UID:-1000}:${GID:-1000}"
     command: php /var/www/artisan queue:work --verbose --tries=3 --timeout=90
     extra_hosts:
-      - "host.docker.internal:host-gateway" # <--- AGGIUNGI QUESTO
+      - "host.docker.internal:host-gateway"
     env_file:
       - .env
     volumes:

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class Dashboard extends Controller
@@ -32,7 +33,18 @@ class Dashboard extends Controller
             ->orderBy('giornata.data', 'desc')
             ->get();
 
-        return view('dashboard', ['prenotazioni' => $prenotazioni, 'username' => $request->session()->get('username')]);
+        // Raggruppiamo le giornate per la colonna 'data'
+        $giornate = DB::table('giornata')
+            ->orderBy('data')
+            ->orderBy('orario')
+            ->get()
+            ->groupBy('data');
+
+        return view('dashboard', [
+            'prenotazioni' => $prenotazioni,
+            'giornate' => $giornate,
+            'username' => $request->session()->get('username')
+        ]);
     }
 
     public function addGiornata(Request $request)
@@ -85,22 +97,32 @@ class Dashboard extends Controller
     {
         $data = $request->input('data');
         $orario = $request->input('orario');
+        $giornate = $request->input('giornate'); // Array di giornate selezionate
+
+        if (!$giornate || !is_array($giornate)) {
+            return redirect()->back()->withErrors(['message' => 'Seleziona almeno una giornata da rimuovere.']);
+        }
 
         // Validazione dei dati, solo la data è obbligatoria, l'orario è facoltativo
-        if (!$data) {
+        if (!$giornate && !$data) {
             return redirect()->back()->withErrors(['message' => 'Data obbligatoria.']);
         }
 
         // Rimuovi la giornata dal database
         try {
-            $query = DB::table('giornata')->where('data', $data)->where('libera', 1);
+            if ($giornate) {
+                foreach ($giornate as $giornata) {
+                    DB::table('giornata')->where('id_giornata', $giornata)->where('libera', 1)->delete();
+                }
+            } else {
+                $query = DB::table('giornata')->where('data', $data)->where('libera', 1);
 
-            if (!empty($orario)) {
-                $query->where('orario', $orario);
+                if (!empty($orario)) {
+                    $query->where('orario', $orario);
+                }
+
+                $query->delete();
             }
-
-
-            $query->delete();
         } catch (Exception $e) {
             return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione della data.']);
         }
@@ -175,7 +197,7 @@ class Dashboard extends Controller
         return redirect()->back()->with('success', 'Tutto è stato rimosso con successo!');
     }
 
-    public function exportCSV()
+    public function exportPDF()
     {
         $prenotazioni = DB::table('prenotazione')
             ->join('giornata', 'prenotazione.id_giornata', '=', 'giornata.id_giornata')
@@ -187,17 +209,14 @@ class Dashboard extends Controller
             return redirect()->back()->withErrors(['message' => 'Non ci sono prenotazioni da esportare.']);
         }
 
-        $csvData = "Nome,Cognome,Email,Numero di Telefono,Data,Orario,Posti Prenotati\n";
+        // Carica la vista e passa i dati
+        $pdf = Pdf::loadView('pdf.prenotazioni', compact('prenotazioni'));
 
-        foreach ($prenotazioni as $prenotazione) {
-            $csvData .= "$prenotazione->nome,$prenotazione->cognome,$prenotazione->email,$prenotazione->telefono,$prenotazione->data,$prenotazione->orario,$prenotazione->posti_prenotati\n";
-        }
+        // Opzionale: imposta il formato carta
+        $pdf->setPaper('a4', 'portrait');
 
-        return response()->streamDownload(function () use ($csvData) {
-            echo $csvData;
-        }, 'prenotazioni.csv', [
-            'Content-Type' => 'text/csv',
-        ]);
+        // Scarica il file
+        return $pdf->download('report_prenotazioni_' . now()->format('Ymd') . '.pdf');
     }
 
     public function confermaPrenotazione(Request $request)

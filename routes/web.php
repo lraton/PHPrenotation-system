@@ -22,7 +22,7 @@ Route::post('/rimuovi-tutte-prenotazioni', [Dashboard::class, 'removeAllPrenotaz
 
 Route::post('/rimuovi-tutto', [Dashboard::class, 'removeAll'])->name('rimuovi-tutto')->middleware(['auth']);
 
-Route::post('/esporta-csv', [Dashboard::class, 'exportCSV'])->name('esporta-csv')->middleware(['auth']);
+Route::post('/esporta-pdf', [Dashboard::class, 'exportPDF'])->name('esporta-pdf')->middleware(['auth']);
 
 Route::get('/tuttodatabase', [Dashboard::class, 'tuttoDatabase'])->middleware(['auth']);
 
