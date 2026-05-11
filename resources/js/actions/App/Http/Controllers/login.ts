@@ -57,7 +57,7 @@ index.form = indexForm
 
 /**
 * @see \App\Http\Controllers\login::db
-* @see app/Http/Controllers/login.php:64
+* @see app/Http/Controllers/login.php:65
 * @route '/crea-db'
 */
 export const db = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -72,7 +72,7 @@ db.definition = {
 
 /**
 * @see \App\Http\Controllers\login::db
-* @see app/Http/Controllers/login.php:64
+* @see app/Http/Controllers/login.php:65
 * @route '/crea-db'
 */
 db.url = (options?: RouteQueryOptions) => {
@@ -81,7 +81,7 @@ db.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\login::db
-* @see app/Http/Controllers/login.php:64
+* @see app/Http/Controllers/login.php:65
 * @route '/crea-db'
 */
 db.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -91,7 +91,7 @@ db.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\login::db
-* @see app/Http/Controllers/login.php:64
+* @see app/Http/Controllers/login.php:65
 * @route '/crea-db'
 */
 db.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -101,7 +101,7 @@ db.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\login::db
-* @see app/Http/Controllers/login.php:64
+* @see app/Http/Controllers/login.php:65
 * @route '/crea-db'
 */
 const dbForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -111,7 +111,7 @@ const dbForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\login::db
-* @see app/Http/Controllers/login.php:64
+* @see app/Http/Controllers/login.php:65
 * @route '/crea-db'
 */
 dbForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -121,7 +121,7 @@ dbForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\login::db
-* @see app/Http/Controllers/login.php:64
+* @see app/Http/Controllers/login.php:65
 * @route '/crea-db'
 */
 dbForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -138,7 +138,7 @@ db.form = dbForm
 
 /**
 * @see \App\Http\Controllers\login::test
-* @see app/Http/Controllers/login.php:92
+* @see app/Http/Controllers/login.php:93
 * @route '/test'
 */
 export const test = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -153,7 +153,7 @@ test.definition = {
 
 /**
 * @see \App\Http\Controllers\login::test
-* @see app/Http/Controllers/login.php:92
+* @see app/Http/Controllers/login.php:93
 * @route '/test'
 */
 test.url = (options?: RouteQueryOptions) => {
@@ -162,7 +162,7 @@ test.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\login::test
-* @see app/Http/Controllers/login.php:92
+* @see app/Http/Controllers/login.php:93
 * @route '/test'
 */
 test.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -172,7 +172,7 @@ test.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\login::test
-* @see app/Http/Controllers/login.php:92
+* @see app/Http/Controllers/login.php:93
 * @route '/test'
 */
 test.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -182,7 +182,7 @@ test.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\login::test
-* @see app/Http/Controllers/login.php:92
+* @see app/Http/Controllers/login.php:93
 * @route '/test'
 */
 const testForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -192,7 +192,7 @@ const testForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\login::test
-* @see app/Http/Controllers/login.php:92
+* @see app/Http/Controllers/login.php:93
 * @route '/test'
 */
 testForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -202,7 +202,7 @@ testForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\login::test
-* @see app/Http/Controllers/login.php:92
+* @see app/Http/Controllers/login.php:93
 * @route '/test'
 */
 testForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -219,7 +219,7 @@ test.form = testForm
 
 /**
 * @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:98
+* @see app/Http/Controllers/login.php:99
 * @route '/signup'
 */
 export const signup = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -234,7 +234,7 @@ signup.definition = {
 
 /**
 * @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:98
+* @see app/Http/Controllers/login.php:99
 * @route '/signup'
 */
 signup.url = (options?: RouteQueryOptions) => {
@@ -243,7 +243,7 @@ signup.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:98
+* @see app/Http/Controllers/login.php:99
 * @route '/signup'
 */
 signup.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -253,7 +253,7 @@ signup.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:98
+* @see app/Http/Controllers/login.php:99
 * @route '/signup'
 */
 signup.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -263,7 +263,7 @@ signup.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:98
+* @see app/Http/Controllers/login.php:99
 * @route '/signup'
 */
 const signupForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -273,7 +273,7 @@ const signupForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => 
 
 /**
 * @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:98
+* @see app/Http/Controllers/login.php:99
 * @route '/signup'
 */
 signupForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -283,7 +283,7 @@ signupForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:98
+* @see app/Http/Controllers/login.php:99
 * @route '/signup'
 */
 signupForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

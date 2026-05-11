@@ -39,6 +39,7 @@ class login extends Controller
             ]);
             $request->session()->put(['token' => $newToken]);
             $request->session()->put(['username' => $admin->username]);
+
             return redirect('/dashboard');
         }
 
@@ -89,10 +90,10 @@ class login extends Controller
         return "Tabelle create con successo!";
     }
 
-    public function test(){
+    public function test()
+    {
         $columns = Schema::getColumnListing('prenotazione');
         return $columns;
-
     }
 
     public function signup()

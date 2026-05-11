@@ -12,16 +12,15 @@ use App\Mail\BookingConfirmation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-
 class HandlePrenotation extends Controller
 {
     private function sendmail(String $email, Collection $booking)
     {
         try {
-            Mail::to($email)->send(new BookingConfirmation($booking));
-            Mail::to('noreply@phpprenotationsystem.com')->send(new BookingConfirmation($booking));
+            Mail::to($email)->queue(new BookingConfirmation($booking, false));
+            Mail::to('noreply@phpprenotationsystem.com')->queue(new BookingConfirmation($booking, true)); // Invia una copia a un indirizzo di log per monitoraggio
         } catch (Throwable $caught) {
-            return redirect('/')->withErrors(['error' => 'Prenotazione effettuata, ma non siamo riusciti a inviare l\'email di conferma.'.$caught->getMessage()]);
+            return redirect()->route('home')->withErrors(['error' => 'Prenotazione effettuata, ma non siamo riusciti a inviare l\'email di conferma.' . $caught->getMessage()]);
         }
     }
 
@@ -74,7 +73,7 @@ class HandlePrenotation extends Controller
 
         if ($dataScelta === null || !DB::table('giornata')->where('data', $dataScelta)->exists() || DB::table('giornata')->where('data', $dataScelta)->value('libera') == 0 || $dataScelta < Carbon::today()->toDateString()) {
             $request->session()->forget(['selected_date']);
-            return redirect('/')->withErrors(['error' => 'Nessuna data selezionata.']);
+            return redirect()->route('home')->withErrors(['error' => 'Nessuna data selezionata.']);
         }
 
         $orariDisponibili = DB::table('giornata')
@@ -84,7 +83,7 @@ class HandlePrenotation extends Controller
 
         if ($orariDisponibili->isEmpty()) {
             $request->session()->forget(['selected_date']);
-            return redirect('/')->withErrors(['error' => 'Nessun orario disponibile per questa data.']);
+            return redirect()->route('home')->withErrors(['error' => 'Nessun orario disponibile per questa data.']);
         }
 
         return Inertia::render('Selection', [
@@ -97,7 +96,7 @@ class HandlePrenotation extends Controller
     {
         $dataScelta = $request->session()->get('selected_date');
         if ($dataScelta === null) {
-            return redirect('/')->withErrors(['error' => 'Nessuna data selezionata.']);
+            return redirect()->route('home')->withErrors(['error' => 'Nessuna data selezionata.']);
         }
 
         $request->session()->put('selected_date', $dataScelta);
@@ -173,10 +172,9 @@ class HandlePrenotation extends Controller
         // Invia l'email di conferma, ma da errore acnhe se la invia
         $this->sendmail($email, $booking);
 
-
         // Puliamo la sessione dopo la prenotazione
         $request->session()->forget(['selected_date', 'orario', 'nome', 'cognome', 'email', 'telefono', 'posti']);
-        return redirect('/')->with('success', 'Prenotazione effettuata con successo per il ' . $dataScelta . ' alle ' . $orarioScelto . '!');
+        return redirect()->route('home')->with('success', 'Prenotazione effettuata con successo per il ' . $dataScelta . ' alle ' . $orarioScelto . '!');
     }
 
     function cancellaPrenotazione(Request $request)
@@ -184,22 +182,22 @@ class HandlePrenotation extends Controller
         $token = $request->query('token');
 
         if (!$token) {
-            return redirect('/')->withErrors(['error' => 'Token di cancellazione mancante.']);
+            return redirect()->route('home')->withErrors(['error' => 'Token di cancellazione mancante.']);
         }
 
         $prenotazione = DB::table('prenotazione')->where('cancel_token', $token)->first();
 
         if (!$prenotazione) {
-            return redirect('/')->withErrors(['error' => 'Token di cancellazione non valido.']);
+            return redirect()->route('home')->withErrors(['error' => 'Token di cancellazione non valido.']);
         }
 
         try {
             DB::table('prenotazione')->where('id_prenotazione', $prenotazione->id_prenotazione)->delete();
             DB::table('giornata')->where('id_giornata', $prenotazione->id_giornata)->increment('libera');
         } catch (Throwable $caught) {
-            return redirect('/')->withErrors(['error' => 'Si è verificato un errore durante la cancellazione della prenotazione.']);
+            return redirect()->route('home')->withErrors(['error' => 'Si è verificato un errore durante la cancellazione della prenotazione.']);
         }
 
-        return redirect('/')->with('success', 'Prenotazione cancellata con successo.');
+        return redirect()->route('home')->with('success', 'Prenotazione cancellata con successo.');
     }
 }

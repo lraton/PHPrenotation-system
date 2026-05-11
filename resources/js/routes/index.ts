@@ -1,5 +1,86 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../wayfinder'
 /**
+* @see \App\Http\Controllers\HandlePrenotation::home
+* @see app/Http/Controllers/HandlePrenotation.php:27
+* @route '/'
+*/
+export const home = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: home.url(options),
+    method: 'get',
+})
+
+home.definition = {
+    methods: ["get","head"],
+    url: '/',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::home
+* @see app/Http/Controllers/HandlePrenotation.php:27
+* @route '/'
+*/
+home.url = (options?: RouteQueryOptions) => {
+    return home.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::home
+* @see app/Http/Controllers/HandlePrenotation.php:27
+* @route '/'
+*/
+home.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: home.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::home
+* @see app/Http/Controllers/HandlePrenotation.php:27
+* @route '/'
+*/
+home.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: home.url(options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::home
+* @see app/Http/Controllers/HandlePrenotation.php:27
+* @route '/'
+*/
+const homeForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: home.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::home
+* @see app/Http/Controllers/HandlePrenotation.php:27
+* @route '/'
+*/
+homeForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: home.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\HandlePrenotation::home
+* @see app/Http/Controllers/HandlePrenotation.php:27
+* @route '/'
+*/
+homeForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: home.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+home.form = homeForm
+
+/**
 * @see \App\Http\Controllers\Dashboard::aggiungiGiornate
 * @see app/Http/Controllers/Dashboard.php:38
 * @route '/aggiungi-giornate'
@@ -393,7 +474,7 @@ rimuoviPrenotazione.form = rimuoviPrenotazioneForm
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
-* @see app/Http/Controllers/HandlePrenotation.php:182
+* @see app/Http/Controllers/HandlePrenotation.php:180
 * @route '/cancella-prenotazione'
 */
 export const cancellaPrenotazione = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -408,7 +489,7 @@ cancellaPrenotazione.definition = {
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
-* @see app/Http/Controllers/HandlePrenotation.php:182
+* @see app/Http/Controllers/HandlePrenotation.php:180
 * @route '/cancella-prenotazione'
 */
 cancellaPrenotazione.url = (options?: RouteQueryOptions) => {
@@ -417,7 +498,7 @@ cancellaPrenotazione.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
-* @see app/Http/Controllers/HandlePrenotation.php:182
+* @see app/Http/Controllers/HandlePrenotation.php:180
 * @route '/cancella-prenotazione'
 */
 cancellaPrenotazione.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -427,7 +508,7 @@ cancellaPrenotazione.get = (options?: RouteQueryOptions): RouteDefinition<'get'>
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
-* @see app/Http/Controllers/HandlePrenotation.php:182
+* @see app/Http/Controllers/HandlePrenotation.php:180
 * @route '/cancella-prenotazione'
 */
 cancellaPrenotazione.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -437,7 +518,7 @@ cancellaPrenotazione.head = (options?: RouteQueryOptions): RouteDefinition<'head
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
-* @see app/Http/Controllers/HandlePrenotation.php:182
+* @see app/Http/Controllers/HandlePrenotation.php:180
 * @route '/cancella-prenotazione'
 */
 const cancellaPrenotazioneForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -447,7 +528,7 @@ const cancellaPrenotazioneForm = (options?: RouteQueryOptions): RouteFormDefinit
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
-* @see app/Http/Controllers/HandlePrenotation.php:182
+* @see app/Http/Controllers/HandlePrenotation.php:180
 * @route '/cancella-prenotazione'
 */
 cancellaPrenotazioneForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -457,7 +538,7 @@ cancellaPrenotazioneForm.get = (options?: RouteQueryOptions): RouteFormDefinitio
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
-* @see app/Http/Controllers/HandlePrenotation.php:182
+* @see app/Http/Controllers/HandlePrenotation.php:180
 * @route '/cancella-prenotazione'
 */
 cancellaPrenotazioneForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

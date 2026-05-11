@@ -6,7 +6,7 @@ use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\login;
 use App\Http\Controllers\logout;
 
-Route::get('/', [HandlePrenotation::class, 'index']);
+Route::get('/', [HandlePrenotation::class, 'index'])->name('home');
 
 Route::get('/selezione', [HandlePrenotation::class, 'selezione']);
 

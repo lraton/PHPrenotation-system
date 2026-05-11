@@ -80,13 +80,12 @@
         <table class="main">
             <tr>
                 <td class="content">
-                    <h1>Prenotazione Confermata</h1>
-                    <p> Gentile {{ $booking->get('name') }}</p>
-                    <p>Grazie per averci scelto. Siamo lieti di confermare la tua prenotazione. Di seguito trovi i
-                        dettagli della tua prenotazione:</p>
-                    <p><strong>Data:</strong> {{ $booking->get('date') }}</p>
-                    <p><strong>Orario:</strong> {{ $booking->get('time') }}</p>
+                    <h1>Nuova prenotazione ricevuta</h1>
+                    <p> Il cliente {{ $booking->get('name') }} ha effettuato una prenotazione.
+                    <p><strong>Giorno {{ $booking->get('date') }}</P>
+                    <p><strong>Orario:</strong> {{ $booking->get('time') }}
                     <p><strong>Numero di persone:</strong> {{ $booking->get('guests') }}</p>
+
                     <p>Se hai bisogno di cancellare la tua prenotazione, puoi utilizzare il seguente link: <a
                             href="http://localhost/cancella-prenotazione?token={{ $booking->get('cancel_token') }}">Cancella
                             prenotazione</a></p>

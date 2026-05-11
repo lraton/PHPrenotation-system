@@ -20,7 +20,7 @@ class CheckLogged
         $user = DB::table('admin')->where('token', $hashedToken)->first();
 
         if (!$user) {
-            $request->session()->forget('token'); 
+            $request->session()->forget('token');
             return redirect('/login')->withErrors(['Sessione non valida.']);
         }
 

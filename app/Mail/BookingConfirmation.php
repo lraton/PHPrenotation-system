@@ -11,21 +11,23 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Support\Collection;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-
-class BookingConfirmation extends Mailable
+class BookingConfirmation extends Mailable implements ShouldQueue
 {
 
     public Collection $booking;
+    public bool $copy;
 
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Collection $booking)
+    public function __construct(Collection $booking, Bool $copy)
     {
         $this->booking = $booking;
+        $this->copy = $copy;
     }
 
     /**
@@ -33,9 +35,15 @@ class BookingConfirmation extends Mailable
      */
     public function envelope(): Envelope
     {
+        if ($this->copy) {
+            return new Envelope(
+                from: new Address('noreply@phpprenotationsystem.com', 'PHP Prenotation System'),
+                subject: 'Nuova prenotazione ricevuta',
+            );
+        }
         return new Envelope(
-            from: new Address('noreply@phpprenotationsystem.com', 'Jeffrey Way'),
-            subject: 'Booking confirmation',
+            from: new Address('noreply@phpprenotationsystem.com', 'PHP Prenotation System'),
+            subject: 'Conferma prenotazione',
         );
     }
 
@@ -44,7 +52,11 @@ class BookingConfirmation extends Mailable
      */
     public function content(): Content
     {
-
+        if ($this->copy) {
+            return new Content(
+                view: 'mail.booking_confirmation_copy'
+            );
+        }
         return new Content(
             view: 'mail.booking_confirmation'
         );
