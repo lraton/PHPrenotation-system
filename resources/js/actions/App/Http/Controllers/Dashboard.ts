@@ -394,7 +394,7 @@ exportPDF.form = exportPDFForm
 /**
 * @see \App\Http\Controllers\Dashboard::tuttoDatabase
 * @see app/Http/Controllers/Dashboard.php:247
-* @route '/tuttodatabase'
+* @route '/database'
 */
 export const tuttoDatabase = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: tuttoDatabase.url(options),
@@ -403,13 +403,13 @@ export const tuttoDatabase = (options?: RouteQueryOptions): RouteDefinition<'get
 
 tuttoDatabase.definition = {
     methods: ["get","head"],
-    url: '/tuttodatabase',
+    url: '/database',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Dashboard::tuttoDatabase
 * @see app/Http/Controllers/Dashboard.php:247
-* @route '/tuttodatabase'
+* @route '/database'
 */
 tuttoDatabase.url = (options?: RouteQueryOptions) => {
     return tuttoDatabase.definition.url + queryParams(options)
@@ -418,7 +418,7 @@ tuttoDatabase.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Dashboard::tuttoDatabase
 * @see app/Http/Controllers/Dashboard.php:247
-* @route '/tuttodatabase'
+* @route '/database'
 */
 tuttoDatabase.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: tuttoDatabase.url(options),
@@ -428,7 +428,7 @@ tuttoDatabase.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 /**
 * @see \App\Http\Controllers\Dashboard::tuttoDatabase
 * @see app/Http/Controllers/Dashboard.php:247
-* @route '/tuttodatabase'
+* @route '/database'
 */
 tuttoDatabase.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: tuttoDatabase.url(options),
@@ -438,7 +438,7 @@ tuttoDatabase.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => (
 /**
 * @see \App\Http\Controllers\Dashboard::tuttoDatabase
 * @see app/Http/Controllers/Dashboard.php:247
-* @route '/tuttodatabase'
+* @route '/database'
 */
 const tuttoDatabaseForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: tuttoDatabase.url(options),
@@ -448,7 +448,7 @@ const tuttoDatabaseForm = (options?: RouteQueryOptions): RouteFormDefinition<'ge
 /**
 * @see \App\Http\Controllers\Dashboard::tuttoDatabase
 * @see app/Http/Controllers/Dashboard.php:247
-* @route '/tuttodatabase'
+* @route '/database'
 */
 tuttoDatabaseForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: tuttoDatabase.url(options),
@@ -458,7 +458,7 @@ tuttoDatabaseForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'
 /**
 * @see \App\Http\Controllers\Dashboard::tuttoDatabase
 * @see app/Http/Controllers/Dashboard.php:247
-* @route '/tuttodatabase'
+* @route '/database'
 */
 tuttoDatabaseForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: tuttoDatabase.url({

@@ -5,6 +5,8 @@
 
 <body>
     <div class="top-bar">
+        <button class="logout-button-top" type="button" onclick="window.location.href='/database'">Visualizza
+            Database</button>
         <button class="logout-button-top" type="button" onclick="window.location.href='/logout'">Esci dalla
             Dashboard</button>
     </div>
@@ -451,7 +453,7 @@
 
     button {
         border: 0;
-        padding: 10px 14px;
+        padding: var(--space-xs);
         background: var(--accent);
         color: #fff;
         border-radius: var(--radius-md);

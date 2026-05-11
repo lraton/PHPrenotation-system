@@ -32,7 +32,7 @@ Route::post('/rimuovi-tutto', [Dashboard::class, 'removeAll'])->name('rimuovi-tu
 
 Route::post('/esporta-pdf', [Dashboard::class, 'exportPDF'])->name('esporta-pdf')->middleware(['auth']);
 
-Route::get('/tuttodatabase', [Dashboard::class, 'tuttoDatabase'])->middleware(['auth']);
+Route::get('/database', [Dashboard::class, 'tuttoDatabase'])->middleware(['auth']);
 
 // Rotte per cancellare e confermare prenotazione
 

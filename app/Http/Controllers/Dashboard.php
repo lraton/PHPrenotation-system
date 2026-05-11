@@ -33,7 +33,7 @@ class Dashboard extends Controller
 
         // Raggruppiamo le giornate per la colonna 'data'
         $giornate = DB::table('giornata')
-            ->orderBy('data')
+            ->orderBy('data','desc')
             ->orderBy('orario')
             ->get()
             ->groupBy('data');
@@ -254,9 +254,19 @@ class Dashboard extends Controller
 
         $giornate = DB::table('giornata')->orderBy('data', 'desc')->get();
 
-        return json_encode([
+        $admins = DB::table('admin')->get();
+
+
+        return view('tuttodatabase', [
             'prenotazioni' => $prenotazioni,
             'giornate' => $giornate,
+            'admins' => $admins
+        ]);
+
+        return response()->json([
+            'prenotazioni' => $prenotazioni,
+            'giornate' => $giornate,
+            'admins' => $admins
         ]);
     }
 }
