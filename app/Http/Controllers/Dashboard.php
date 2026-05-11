@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Exception;
-use Barryvdh\DomPDF\Facade\Pdf;
-
 
 class Dashboard extends Controller
 {
-
     private function generateDateRange($startDate, $endDate)
     {
         $dates = [];
@@ -43,7 +41,7 @@ class Dashboard extends Controller
         return view('dashboard', [
             'prenotazioni' => $prenotazioni,
             'giornate' => $giornate,
-            'username' => $request->session()->get('username')
+            'username' => $request->session()->get('username'),
         ]);
     }
 
@@ -54,20 +52,20 @@ class Dashboard extends Controller
         $datainizio = $request->input('datainizio');
         $datafine = $request->input('datafine');
         $orari = $request->input('orari'); // Array di orari selezionati
-        if ($orari && !is_array($orari)) {
+        if ($orari && ! is_array($orari)) {
             $orari = [$orari];
         }
 
         // Validazione dei dati
-        if (!$data || !$orario) {
-            if (!$datainizio || !$datafine || empty($orari)) {
+        if (! $data || ! $orario) {
+            if (! $datainizio || ! $datafine || empty($orari)) {
 
                 return redirect()->back()->withErrors(['message' => 'Date e orari sono obbligatori. ' . $data . ' ' . $orario . ' ' . $datainizio . ' ' . $datafine . ' ' . json_encode($orari)]);
             } else {
                 foreach ($orari as $o) {
                     foreach ($this->generateDateRange($datainizio, $datafine) as $date) {
-                        if (!DB::table('giornata')->where('data', $date)->where('orario', $o)->exists()) {
-                            //return redirect()->back()->withErrors(['message' => 'Il giorno ' . $date . ' con questo orario ' . $o . ' esiste già.']);
+                        if (! DB::table('giornata')->where('data', $date)->where('orario', $o)->exists()) {
+                            // return redirect()->back()->withErrors(['message' => 'Il giorno ' . $date . ' con questo orario ' . $o . ' esiste già.']);
                             // Aggiungi la nuova giornata al database
                             DB::table('giornata')->insert([
                                 'data' => $date,
@@ -90,6 +88,7 @@ class Dashboard extends Controller
                 'libera' => 1, // 1 disponibile, 0 non disponibile
             ]);
         }
+
         return redirect()->back()->with('success', 'Data aggiunta con successo!');
     }
 
@@ -99,12 +98,12 @@ class Dashboard extends Controller
         $orario = $request->input('orario');
         $giornate = $request->input('giornate'); // Array di giornate selezionate
 
-        if (!$giornate || !is_array($giornate)) {
+        if (! $giornate || ! is_array($giornate)) {
             return redirect()->back()->withErrors(['message' => 'Seleziona almeno una giornata da rimuovere.']);
         }
 
         // Validazione dei dati, solo la data è obbligatoria, l'orario è facoltativo
-        if (!$giornate && !$data) {
+        if (! $giornate && ! $data) {
             return redirect()->back()->withErrors(['message' => 'Data obbligatoria.']);
         }
 
@@ -117,7 +116,7 @@ class Dashboard extends Controller
             } else {
                 $query = DB::table('giornata')->where('data', $data)->where('libera', 1);
 
-                if (!empty($orario)) {
+                if (! empty($orario)) {
                     $query->where('orario', $orario);
                 }
 
@@ -126,6 +125,7 @@ class Dashboard extends Controller
         } catch (Exception $e) {
             return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione della data.']);
         }
+
         return redirect()->back()->with('success', 'Data rimossa con successo!');
     }
 
@@ -136,6 +136,7 @@ class Dashboard extends Controller
         } catch (Exception $e) {
             return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione di tutte le date.']);
         }
+
         return redirect()->back()->with('success', 'Tutte le date sono state rimosse con successo!');
     }
 
@@ -159,6 +160,7 @@ class Dashboard extends Controller
         } catch (Exception $e) {
             return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione di tutte le prenotazioni.']);
         }
+
         return redirect()->back()->with('success', 'Tutte le prenotazioni sono state rimosse con successo!');
     }
 
@@ -166,7 +168,7 @@ class Dashboard extends Controller
     {
         $prenotazioni = $request->input('prenotazioni');
 
-        if (!$prenotazioni || !is_array($prenotazioni)) {
+        if (! $prenotazioni || ! is_array($prenotazioni)) {
             return redirect()->back()->withErrors(['message' => 'Seleziona almeno una prenotazione da rimuovere.']);
         }
 
@@ -194,6 +196,7 @@ class Dashboard extends Controller
         } catch (Exception $e) {
             return redirect()->back()->withErrors(['message' => 'Si è verificato un errore durante la rimozione di tutto. ' . $e->getMessage()]);
         }
+
         return redirect()->back()->with('success', 'Tutto è stato rimosso con successo!');
     }
 
@@ -223,11 +226,11 @@ class Dashboard extends Controller
     {
         $token = $request->query('token');
 
-        if (!$token) {
+        if (! $token) {
             return redirect('/')->withErrors(['error' => 'Token di conferma non valido.']);
         }
 
-        if (!DB::table('prenotazione')->where('qr_token', $token)->exists()) {
+        if (! DB::table('prenotazione')->where('qr_token', $token)->exists()) {
             return redirect('/')->withErrors(['error' => 'Token di conferma non valido.']);
         }
 
@@ -253,7 +256,7 @@ class Dashboard extends Controller
 
         return json_encode([
             'prenotazioni' => $prenotazioni,
-            'giornate' => $giornate
+            'giornate' => $giornate,
         ]);
     }
 }

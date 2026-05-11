@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Throwable;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\BookingConfirmation;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
+use Throwable;
 
 class HandlePrenotation extends Controller
 {
-    private function sendmail(String $email, Collection $booking)
+    private function sendmail(string $email, Collection $booking)
     {
         try {
             Mail::to($email)->queue(new BookingConfirmation($booking, false));
@@ -35,14 +35,16 @@ class HandlePrenotation extends Controller
             ->get()
             ->map(function ($item) {
                 $date = Carbon::parse($item->data);
+
                 return [
                     'raw' => $item->data,
                     'formatted' => $this->formatDateItalian($date),
-                    'is_past' => $date->isPast() && !$date->isToday()
+                    'is_past' => $date->isPast() && ! $date->isToday(),
                 ];
             });
+
         return Inertia::render('Welcome', [
-            'giornateIniziali' => $giornate
+            'giornateIniziali' => $giornate,
         ]);
     }
 
@@ -60,7 +62,7 @@ class HandlePrenotation extends Controller
             9 => 'SETTEMBRE',
             10 => 'OTTOBRE',
             11 => 'NOVEMBRE',
-            12 => 'DICEMBRE'
+            12 => 'DICEMBRE',
         ];
 
         return $date->day . ' - ' . $mesi[$date->month] . ' - ' . $date->year;
@@ -69,10 +71,11 @@ class HandlePrenotation extends Controller
     public function selezione(Request $request)
     {
         $request->session()->put('selected_date', $request->input('date'));
-        $dataScelta = $request->input('date');
+        $dataScelta = $request->input('date');  
 
-        if ($dataScelta === null || !DB::table('giornata')->where('data', $dataScelta)->exists() || DB::table('giornata')->where('data', $dataScelta)->value('libera') == 0 || $dataScelta < Carbon::today()->toDateString()) {
+        if ($dataScelta === null || ! DB::table('giornata')->where('data', $dataScelta)->exists() || ! DB::table('giornata')->where('data', $dataScelta)->where('libera', 1)->exists() || $dataScelta < Carbon::today()->toDateString()) {
             $request->session()->forget(['selected_date']);
+
             return redirect()->route('home')->withErrors(['error' => 'Nessuna data selezionata.']);
         }
 
@@ -83,12 +86,13 @@ class HandlePrenotation extends Controller
 
         if ($orariDisponibili->isEmpty()) {
             $request->session()->forget(['selected_date']);
+
             return redirect()->route('home')->withErrors(['error' => 'Nessun orario disponibile per questa data.']);
         }
 
         return Inertia::render('Selection', [
             'dataScelta' => $dataScelta,
-            'orari' => $orariDisponibili
+            'orari' => $orariDisponibili,
         ]);
     }
 
@@ -119,18 +123,20 @@ class HandlePrenotation extends Controller
             'name' => $nome . ' ' . $cognome,
             'date' => $dataScelta,
             'time' => $orarioScelto,
-            'guests' => $posti
+            'guests' => $posti,
         ]);
 
         // Validazione dei dati
         if ($orarioScelto === null || $nome === null || $cognome === null || $email === null || $telefono === null || $posti === null) {
             $request->session()->forget(['selected_date', 'orario', 'nome', 'cognome', 'email', 'telefono', 'posti']);
+
             return back()->withErrors(['error' => 'Compila tutti i campi.']);
         }
 
         // Controlla se ci sono posti disponibili per la data e l'orario scelti
         if (DB::table('giornata')->where('data', $dataScelta)->where('orario', $orarioScelto)->value('libera') == 0) {
             $request->session()->forget(['selected_date', 'orario', 'nome', 'cognome', 'email', 'telefono', 'posti']);
+
             return back()->withErrors(['error' => 'Il numero di posti deve essere almeno 1.']);
         }
 
@@ -151,9 +157,9 @@ class HandlePrenotation extends Controller
             ]);
         } catch (Throwable $caught) {
             $request->session()->forget(['selected_date', 'orario', 'nome', 'cognome', 'email', 'telefono', 'posti']);
+
             return back()->withErrors(['error' => $caught->getMessage()]);
         }
-
 
         // Riduci il numero di posti liberi
         try {
@@ -166,6 +172,7 @@ class HandlePrenotation extends Controller
                 ->where('cancel_token', $booking->cancel_token)
                 ->delete();
             $request->session()->forget(['selected_date', 'orario', 'nome', 'cognome', 'email', 'telefono', 'posti']);
+
             return back()->withErrors(['error' => 'Si è verificato un errore durante la cancellazione della prenotazione.']);
         }
 
@@ -174,20 +181,21 @@ class HandlePrenotation extends Controller
 
         // Puliamo la sessione dopo la prenotazione
         $request->session()->forget(['selected_date', 'orario', 'nome', 'cognome', 'email', 'telefono', 'posti']);
+
         return redirect()->route('home')->with('success', 'Prenotazione effettuata con successo per il ' . $dataScelta . ' alle ' . $orarioScelto . '!');
     }
 
-    function cancellaPrenotazione(Request $request)
+    public function cancellaPrenotazione(Request $request)
     {
         $token = $request->query('token');
 
-        if (!$token) {
+        if (! $token) {
             return redirect()->route('home')->withErrors(['error' => 'Token di cancellazione mancante.']);
         }
 
         $prenotazione = DB::table('prenotazione')->where('cancel_token', $token)->first();
 
-        if (!$prenotazione) {
+        if (! $prenotazione) {
             return redirect()->route('home')->withErrors(['error' => 'Token di cancellazione non valido.']);
         }
 

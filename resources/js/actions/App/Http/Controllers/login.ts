@@ -56,6 +56,87 @@ indexForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => (
 index.form = indexForm
 
 /**
+* @see \App\Http\Controllers\login::signup
+* @see app/Http/Controllers/login.php:99
+* @route '/signup'
+*/
+export const signup = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: signup.url(options),
+    method: 'get',
+})
+
+signup.definition = {
+    methods: ["get","head"],
+    url: '/signup',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\login::signup
+* @see app/Http/Controllers/login.php:99
+* @route '/signup'
+*/
+signup.url = (options?: RouteQueryOptions) => {
+    return signup.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\login::signup
+* @see app/Http/Controllers/login.php:99
+* @route '/signup'
+*/
+signup.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: signup.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\login::signup
+* @see app/Http/Controllers/login.php:99
+* @route '/signup'
+*/
+signup.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: signup.url(options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\login::signup
+* @see app/Http/Controllers/login.php:99
+* @route '/signup'
+*/
+const signupForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: signup.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\login::signup
+* @see app/Http/Controllers/login.php:99
+* @route '/signup'
+*/
+signupForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: signup.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\login::signup
+* @see app/Http/Controllers/login.php:99
+* @route '/signup'
+*/
+signupForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: signup.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+signup.form = signupForm
+
+/**
 * @see \App\Http\Controllers\login::db
 * @see app/Http/Controllers/login.php:65
 * @route '/crea-db'
@@ -217,87 +298,6 @@ testForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 test.form = testForm
 
-/**
-* @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:99
-* @route '/signup'
-*/
-export const signup = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: signup.url(options),
-    method: 'get',
-})
-
-signup.definition = {
-    methods: ["get","head"],
-    url: '/signup',
-} satisfies RouteDefinition<["get","head"]>
-
-/**
-* @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:99
-* @route '/signup'
-*/
-signup.url = (options?: RouteQueryOptions) => {
-    return signup.definition.url + queryParams(options)
-}
-
-/**
-* @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:99
-* @route '/signup'
-*/
-signup.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: signup.url(options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:99
-* @route '/signup'
-*/
-signup.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: signup.url(options),
-    method: 'head',
-})
-
-/**
-* @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:99
-* @route '/signup'
-*/
-const signupForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: signup.url(options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:99
-* @route '/signup'
-*/
-signupForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: signup.url(options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\login::signup
-* @see app/Http/Controllers/login.php:99
-* @route '/signup'
-*/
-signupForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: signup.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-signup.form = signupForm
-
-const login = { index, db, test, signup }
+const login = { index, signup, db, test }
 
 export default login

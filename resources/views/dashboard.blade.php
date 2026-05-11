@@ -48,7 +48,7 @@
                 <div class="forms-row">
                     <details open>
                         <summary>Aggiungi Singola</summary>
-                        <form method="POST" action="{{ route('aggiungi-giornate') }}`">
+                        <form method="POST" action="{{ route('aggiungi-giornate') }}">
                             @csrf
                             <input type="date" name="data" required>
                             <input type="time" name="orario" required>
@@ -92,10 +92,10 @@
 
         <!-- LISTA SOTTO -->
         <section class="booking-list">
-
+            <h3>Gestione Prenotazioni</h3>
             <form method="POST" action="{{ route('rimuovi-prenotazione') }}" id="main-booking-form">
                 <details open>
-                    <summary>Lista Prenotazioni</summary>
+                    <summary>{{ count($prenotazioni) }} Prenotazioni Totali</summary>
                     @csrf
                     <ul class="scrollable-list">
                         @foreach ($prenotazioni as $prenotazione)
@@ -140,6 +140,7 @@
 
         <!-- LISTA SOTTO -->
         <section class="booking-list">
+            <h3>📅 Gestione date</h3>
             <form method="POST" action="{{ route('rimuovi-giornate') }}" id="main-booking-form">
 
                 <details>
@@ -262,6 +263,8 @@
         --danger-dark: #9b2c2c;
         --ghost-bg: #edf2f7;
         --ghost-text: #4a5568;
+        --ghost-bg-hover: #e2e8f0;
+        --ghost-text-hover: #2d3748;
 
         /* Spaziature (Padding/Gaps) */
         --space-xs: 8px;
@@ -313,21 +316,20 @@
         background: var(--danger);
     }
 
-    .logout-button-top,
-    {
-    color: white;
-    border: none;
-    padding: var(--space-xs) var(--space-md);
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    cursor: pointer;
-    margin-left: 10px;
-    transition: opacity 0.2s;
+    .logout-button-top {
+        color: white;
+        border: none;
+        padding: var(--space-xs) var(--space-md);
+        border-radius: var(--radius-md);
+        font-weight: 600;
+        cursor: pointer;
+        margin-left: 10px;
+        transition: opacity 0.2s;
     }
 
-    .logout-button-top:hover,
-    {
-    opacity: 0.9;
+    .logout-button-top:hover {
+        background: var(--danger-dark);
+        opacity: 0.9;
     }
 
 
@@ -480,7 +482,7 @@
         font-size: 11px;
         font-weight: bold;
         width: fit-content;
-        margin-left:auto;
+        margin-left: auto;
     }
 
     .badge-people {
@@ -511,14 +513,13 @@
     }
 
     .delete-btn-sm {
-        background: var(--danger-light);
-        color: var(--danger-dark);
+        background: var(--danger);
         padding: var(--space-xs);
         font-size: 13px;
     }
 
     .delete-btn-sm:hover {
-        background: var(--danger);
+        background: var(--danger-dark);
     }
 
     details {
@@ -541,12 +542,22 @@
         font-size: 12px;
     }
 
+    .btn-ghost:hover {
+        background: var(--ghost-bg-hover);
+        color: var(--ghost-text-hover);
+    }
+
     .text-btn-danger {
         background: transparent;
         color: var(--danger);
         font-size: 11px;
         text-decoration: underline;
         padding: 0;
+    }
+
+    .text-btn-danger:hover {
+        color: var(--danger-dark);
+        background: transparent;
     }
 
     .text-danger {

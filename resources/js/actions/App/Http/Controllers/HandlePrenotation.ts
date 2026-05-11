@@ -82,7 +82,7 @@ index.form = indexForm
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::selezione
-* @see app/Http/Controllers/HandlePrenotation.php:69
+* @see app/Http/Controllers/HandlePrenotation.php:71
 * @route '/selezione'
 */
 export const selezione = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -97,7 +97,7 @@ selezione.definition = {
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::selezione
-* @see app/Http/Controllers/HandlePrenotation.php:69
+* @see app/Http/Controllers/HandlePrenotation.php:71
 * @route '/selezione'
 */
 selezione.url = (options?: RouteQueryOptions) => {
@@ -106,7 +106,7 @@ selezione.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::selezione
-* @see app/Http/Controllers/HandlePrenotation.php:69
+* @see app/Http/Controllers/HandlePrenotation.php:71
 * @route '/selezione'
 */
 selezione.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -116,7 +116,7 @@ selezione.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::selezione
-* @see app/Http/Controllers/HandlePrenotation.php:69
+* @see app/Http/Controllers/HandlePrenotation.php:71
 * @route '/selezione'
 */
 selezione.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -126,7 +126,7 @@ selezione.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::selezione
-* @see app/Http/Controllers/HandlePrenotation.php:69
+* @see app/Http/Controllers/HandlePrenotation.php:71
 * @route '/selezione'
 */
 const selezioneForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -136,7 +136,7 @@ const selezioneForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> 
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::selezione
-* @see app/Http/Controllers/HandlePrenotation.php:69
+* @see app/Http/Controllers/HandlePrenotation.php:71
 * @route '/selezione'
 */
 selezioneForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -146,7 +146,7 @@ selezioneForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> =>
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::selezione
-* @see app/Http/Controllers/HandlePrenotation.php:69
+* @see app/Http/Controllers/HandlePrenotation.php:71
 * @route '/selezione'
 */
 selezioneForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -163,7 +163,7 @@ selezione.form = selezioneForm
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::prenota
-* @see app/Http/Controllers/HandlePrenotation.php:95
+* @see app/Http/Controllers/HandlePrenotation.php:99
 * @route '/prenotazione'
 */
 export const prenota = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -178,7 +178,7 @@ prenota.definition = {
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::prenota
-* @see app/Http/Controllers/HandlePrenotation.php:95
+* @see app/Http/Controllers/HandlePrenotation.php:99
 * @route '/prenotazione'
 */
 prenota.url = (options?: RouteQueryOptions) => {
@@ -187,7 +187,7 @@ prenota.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::prenota
-* @see app/Http/Controllers/HandlePrenotation.php:95
+* @see app/Http/Controllers/HandlePrenotation.php:99
 * @route '/prenotazione'
 */
 prenota.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -197,7 +197,7 @@ prenota.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::prenota
-* @see app/Http/Controllers/HandlePrenotation.php:95
+* @see app/Http/Controllers/HandlePrenotation.php:99
 * @route '/prenotazione'
 */
 const prenotaForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -207,7 +207,7 @@ const prenotaForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> =
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::prenota
-* @see app/Http/Controllers/HandlePrenotation.php:95
+* @see app/Http/Controllers/HandlePrenotation.php:99
 * @route '/prenotazione'
 */
 prenotaForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -219,7 +219,7 @@ prenota.form = prenotaForm
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
-* @see app/Http/Controllers/HandlePrenotation.php:180
+* @see app/Http/Controllers/HandlePrenotation.php:188
 * @route '/cancella-prenotazione'
 */
 export const cancellaPrenotazione = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -234,7 +234,7 @@ cancellaPrenotazione.definition = {
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
-* @see app/Http/Controllers/HandlePrenotation.php:180
+* @see app/Http/Controllers/HandlePrenotation.php:188
 * @route '/cancella-prenotazione'
 */
 cancellaPrenotazione.url = (options?: RouteQueryOptions) => {
@@ -243,7 +243,7 @@ cancellaPrenotazione.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
-* @see app/Http/Controllers/HandlePrenotation.php:180
+* @see app/Http/Controllers/HandlePrenotation.php:188
 * @route '/cancella-prenotazione'
 */
 cancellaPrenotazione.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -253,7 +253,7 @@ cancellaPrenotazione.get = (options?: RouteQueryOptions): RouteDefinition<'get'>
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
-* @see app/Http/Controllers/HandlePrenotation.php:180
+* @see app/Http/Controllers/HandlePrenotation.php:188
 * @route '/cancella-prenotazione'
 */
 cancellaPrenotazione.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -263,7 +263,7 @@ cancellaPrenotazione.head = (options?: RouteQueryOptions): RouteDefinition<'head
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
-* @see app/Http/Controllers/HandlePrenotation.php:180
+* @see app/Http/Controllers/HandlePrenotation.php:188
 * @route '/cancella-prenotazione'
 */
 const cancellaPrenotazioneForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -273,7 +273,7 @@ const cancellaPrenotazioneForm = (options?: RouteQueryOptions): RouteFormDefinit
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
-* @see app/Http/Controllers/HandlePrenotation.php:180
+* @see app/Http/Controllers/HandlePrenotation.php:188
 * @route '/cancella-prenotazione'
 */
 cancellaPrenotazioneForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -283,7 +283,7 @@ cancellaPrenotazioneForm.get = (options?: RouteQueryOptions): RouteFormDefinitio
 
 /**
 * @see \App\Http\Controllers\HandlePrenotation::cancellaPrenotazione
-* @see app/Http/Controllers/HandlePrenotation.php:180
+* @see app/Http/Controllers/HandlePrenotation.php:188
 * @route '/cancella-prenotazione'
 */
 cancellaPrenotazioneForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
