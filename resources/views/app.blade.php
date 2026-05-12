@@ -15,12 +15,11 @@
         gtag('js', new Date());
         gtag('config', 'G-VTKT9J2Z0Y');
     </script>
-    @vite(['resources/js/app.js', 'resources/css/app.css'])
+    @vite(['resources/js/app.js'])
     @inertiaHead
 </head>
 
 <body>
-    </div>
     <a href="/" style="display:block; text-align:center; margin:20px 0;">
         <img src="/img/scritta.png" alt="PHPrenotation System">
     </a>

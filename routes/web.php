@@ -30,7 +30,7 @@ Route::post('/rimuovi-tutto', [Dashboard::class, 'removeAll'])->name('rimuovi-tu
 
 // Rotte per esportare PDF 
 
-Route::post('/esporta-pdf', [Dashboard::class, 'exportPDF'])->name('esporta-pdf')->middleware(['auth']);
+Route::get('/esporta-pdf', [Dashboard::class, 'exportPDF'])->name('esporta-pdf')->middleware(['auth']);
 
 Route::get('/database', [Dashboard::class, 'tuttoDatabase'])->middleware(['auth']);
 
@@ -48,7 +48,7 @@ Route::get('/login', function () {
 
 Route::post('/login', [login::class, 'index']);
 
-Route::get('/dashboard', [Dashboard::class, 'index'])->middleware(['auth']);
+Route::get('/dashboard', [Dashboard::class, 'index'])->name('dashboard')->middleware(['auth']);
 
 Route::get('/logout', [logout::class, 'index'])->middleware(['auth']);
 

@@ -40,7 +40,7 @@ class login extends Controller
             $request->session()->put(['token' => $newToken]);
             $request->session()->put(['username' => $admin->username]);
 
-            return redirect('/dashboard');
+            return redirect('dashboard');
         }
 
         // Se la chiave non esiste, la crea partendo da 1. Se esiste, aggiunge 1.

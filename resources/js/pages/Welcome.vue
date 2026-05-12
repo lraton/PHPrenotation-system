@@ -44,6 +44,7 @@
 
 <script>
 import { router } from '@inertiajs/vue3'
+import '../../css/app.css';
 
 export default {
     props: {

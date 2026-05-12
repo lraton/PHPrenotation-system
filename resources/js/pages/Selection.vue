@@ -55,6 +55,7 @@
 
 <script setup>
 import { useForm } from '@inertiajs/vue3';
+import '../../css/app.css';
 
 const props = defineProps({
     dataScelta: String,

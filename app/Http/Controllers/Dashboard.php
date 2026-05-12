@@ -6,6 +6,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class Dashboard extends Controller
 {
@@ -33,10 +34,15 @@ class Dashboard extends Controller
 
         // Raggruppiamo le giornate per la colonna 'data'
         $giornate = DB::table('giornata')
-            ->orderBy('data','desc')
+            ->orderBy('data', 'desc')
             ->orderBy('orario')
-            ->get()
-            ->groupBy('data');
+            ->get();
+
+        return Inertia::render('dashboard', [
+            'prenotazioni' => $prenotazioni,
+            'giornate' => $giornate,
+            'username' => $request->session()->get('username'),
+        ]);
 
         return view('dashboard', [
             'prenotazioni' => $prenotazioni,
@@ -47,7 +53,7 @@ class Dashboard extends Controller
 
     public function addGiornata(Request $request)
     {
-        $data = $request->input('data');
+        $data = $request->input('date');
         $orario = $request->input('orario');
         $datainizio = $request->input('datainizio');
         $datafine = $request->input('datafine');
@@ -94,11 +100,14 @@ class Dashboard extends Controller
 
     public function removeGiornata(Request $request)
     {
-        $data = $request->input('data');
+        $data = $request->input('date');
         $orario = $request->input('orario');
         $giornate = $request->input('giornate'); // Array di giornate selezionate
-
-        if (! $giornate || ! is_array($giornate)) {
+        ds($giornate);
+        ds($data);
+        ds($orario);
+        //controlle se ce almeno una giornata selezionata o se sono stati inserite una serie di date
+        if (! $giornate && ! $data) {
             return redirect()->back()->withErrors(['message' => 'Seleziona almeno una giornata da rimuovere.']);
         }
 
