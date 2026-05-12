@@ -1,7 +1,7 @@
 <template>
     <div class="top-bar">
         <button class="nav-button" @click="$inertia.visit('/database')">Visualizza Database</button>
-        <button class="logout-button" @click="$inertia.post('/logout')">Esci dalla Dashboard</button>
+        <button class="logout-button-top" @click="$inertia.post('/logout')">Esci dalla Dashboard</button>
     </div>
 
     <div class="alerts-container" style="max-width:1200px; margin: 0 auto; padding: 0 24px;">
@@ -57,7 +57,7 @@
                             </div>
                             <div class="input-group-row">
                                 <button type="button" @click="addOrarioField" class="btn-ghost">+ Orario</button>
-                                <button type="submit" class="btn-sm" :disabled="formRange.processing">Genera</button>
+                                <button type="submit" class="btn-sm" :disabled="formRange.processing">Aggiungi</button>
                             </div>
                         </form>
                     </details>
@@ -75,90 +75,95 @@
             </div>
         </aside>
 
-        <!-- SECTION: LISTA PRENOTAZIONI -->
-        <section class="booking-list">
-            <div class="section-header">
-                <h3>👥 Prenotazioni Attive</h3>
-                <span class="count-badge">{{ prenotazioni.length }} totali</span>
-            </div>
-
-            <form @submit.prevent="eliminaPrenotazioniSelezionate">
-                <div class="scrollable-list">
-                    <ul>
-                        <li v-for="p in prenotazioni" :key="p.id_prenotazione">
-                            <input type="checkbox" v-model="selectedPrenotazioni" :value="p.id_prenotazione">
-                            <div class="booking-info">
-                                <strong>{{ p.nome }} {{ p.cognome }}</strong>
-                                <small>{{ p.data }} alle {{ p.orario }} — {{ p.posti_prenotati }} pers.</small>
-                                <span class="contact-info">{{ p.telefono }} | {{ p.email }}</span>
-                            </div>
-                            <div class="status-info">
-                                <span class="badge"
-                                    :style="{ background: p.conferma ? '#38a169' : '#e53e3e', color: 'white' }">
-                                    {{ p.conferma ? 'Confermato' : 'In attesa' }}
-                                </span>
-                            </div>
-                        </li>
-                    </ul>
+        <div class="dashboard-main">
+            <!-- SECTION: LISTA PRENOTAZIONI -->
+            <section class="booking-list">
+                <div class="section-header">
+                    <h3>👥 Prenotazioni Attive</h3>
+                    <span class="count-badge">{{ prenotazioni.length }} totali</span>
                 </div>
 
-                <div class="actions-footer">
-                    <button class="csv-button large-btn" type="button" @click="esportaPDF">
-                        📥 Scarica Lista PDF
-                    </button>
-                    <div class="danger-zone-inline">
-                        <button class="delete-btn-sm" type="submit" :disabled="!selectedPrenotazioni.length">Elimina
-                            selezionate</button>
-                        <button class="delete-btn-sm" type="button" @click="eliminaTuttePrenotazioni">Svuota
-                            lista</button>
+                <form @submit.prevent="eliminaPrenotazioniSelezionate">
+                    <div class="scrollable-list">
+                        <ul class="booking-items">
+                            <li v-for="p in prenotazioni" :key="p.id_prenotazione" class="booking-item">
+                                <input type="checkbox" v-model="selectedPrenotazioni" :value="p.id_prenotazione">
+                                <div class="booking-info">
+                                    <strong>{{ p.nome }} {{ p.cognome }}</strong>
+                                    <small>{{ p.data }} alle {{ p.orario }} — {{ p.posti_prenotati }} pers.</small>
+                                    <span class="contact-info">{{ p.telefono }} | {{ p.email }}</span>
+                                </div>
+                                <div class="status-info">
+                                    <span class="badge"
+                                        :style="{ background: p.conferma ? '#38a169' : '#e53e3e', color: 'white' }">
+                                        {{ p.conferma ? 'Confermato' : 'In attesa' }}
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
+
+                    <div class="actions-footer">
+                        <button class="csv-button large-btn" type="button" @click="esportaPDF">
+                            📥 Scarica Lista PDF
+                        </button>
+                        <div class="danger-zone-inline">
+                            <button class="delete-btn-sm" type="submit" :disabled="!selectedPrenotazioni.length">Elimina
+                                selezionate</button>
+                            <button class="delete-btn-sm" type="button" @click="eliminaTuttePrenotazioni">Svuota
+                                lista</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <!-- SECTION: VISUALIZZAZIONE CALENDARIO -->
+            <section class="booking-list">
+                <div class="section-header">
+                    <h3>📅 Stato Disponibilità</h3>
+                    <span class="count-badge">{{ freeOrari }} / {{ totalOrari }}</span>
                 </div>
-            </form>
-        </section>
+                <div class="date-management-container">
+                    <p class="summary-text">{{ freeOrari }} slot liberi su {{ totalOrari }} totali</p>
 
-        <!-- SECTION: VISUALIZZAZIONE CALENDARIO -->
-        <section class="booking-list">
-            <h3>📅 Stato Disponibilità</h3>
-            <div class="date-management-container">
-                <details>
-                    <summary>
-
-
-                        <p class="summary-text">{{ freeOrari }} slot liberi su {{ totalOrari }} totali</p>
-                    </summary>
                     <details v-for="(orari, data) in giornateRaggruppate" :key="data" class="date-group">
                         <summary class="summary-flex">
                             <div class="summary-content">
                                 <strong>{{ data }}</strong>
+                                <br>
                                 <small>({{orari.filter(o => o.libera).length}} disponibili)</small>
                             </div>
                             <input type="checkbox" @change="toggleGroup(orari, $event)" @click.stop
-                                title="Seleziona tutto il giorno">
+                                title="Seleziona tutto il giorno" class="select-all-group">
                         </summary>
 
                         <div class="details-content">
                             <ul class="grid-list">
-                                <li v-for="g in orari" :key="g.id_giornata" :class="{ 'is-booked': !g.libera }">
-                                    <input type="checkbox" v-model="formElimina.giornate" :value="g.id_giornata">
+                                <li v-for="g in orari" :key="g.id_giornata" class="slot-item"
+                                    :class="{ 'is-booked': !g.libera }">
                                     <div class="slot-info">
                                         <strong>{{ g.orario }}</strong>
-                                        <span class="status-dot" :title="g.libera ? 'Libero' : 'Occupato'"></span>
+                                        <input type="checkbox" v-model="formElimina.giornate" :value="g.id_giornata">
+                                        <span class="badge"
+                                            :style="{ background: g.libera ? '#38a169' : '#e53e3e', color: 'white' }">
+                                            {{ g.libera ? 'Libero' : 'Occupato' }}
+                                        </span>
                                     </div>
                                 </li>
                             </ul>
                         </div>
                     </details>
-                </details>
-            </div>
-
-            <div class="actions-footer">
-                <div class="danger-zone-inline">
-                    <button @click="eliminaGiornateSelezionate" class="delete-btn-sm"
-                        :disabled="!formElimina.giornate.length">Elimina Selezionate</button>
-                    <button @click="eliminaTutteGiornate" class="delete-btn-sm">Elimina tutte le date</button>
                 </div>
-            </div>
-        </section>
+
+                <div class="actions-footer">
+                    <div class="danger-zone-inline">
+                        <button @click="eliminaGiornateSelezionate" class="delete-btn-sm"
+                            :disabled="!formElimina.giornate.length">Elimina Selezionate</button>
+                        <button @click="eliminaTutteGiornate" class="delete-btn-sm">Elimina tutte le date</button>
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
 </template>
 

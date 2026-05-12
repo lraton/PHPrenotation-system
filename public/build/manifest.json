@@ -52,7 +52,7 @@
     "src": "_instrument-sans-600-normal-DMks36a2.woff"
   },
   "resources/css/app.css": {
-    "file": "assets/app-CbwYPWns.css",
+    "file": "assets/app-orQTfJdG.css",
     "name": "app",
     "names": [
       "app.css"
@@ -61,21 +61,50 @@
     "isEntry": true
   },
   "resources/js/app.ts": {
-    "file": "assets/app-Bf1XnH2H.js",
+    "file": "assets/app-DxwPtAYV.js",
     "name": "app",
     "src": "resources/js/app.ts",
     "isEntry": true,
     "dynamicImports": [
-      "resources/js/pages/Welcome.vue"
+      "resources/js/pages/Selection.vue",
+      "resources/js/pages/Welcome.vue",
+      "resources/js/pages/dashboard.vue"
+    ]
+  },
+  "resources/js/pages/Selection.vue": {
+    "file": "assets/Selection-MVEg8vR4.js",
+    "name": "Selection",
+    "src": "resources/js/pages/Selection.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.ts"
+    ],
+    "css": [
+      "assets/app-orQTfJdG.css"
     ]
   },
   "resources/js/pages/Welcome.vue": {
-    "file": "assets/Welcome-DNaHBLCO.js",
+    "file": "assets/Welcome-J0UF3kDC.js",
     "name": "Welcome",
     "src": "resources/js/pages/Welcome.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.ts"
+    ],
+    "css": [
+      "assets/app-orQTfJdG.css"
+    ]
+  },
+  "resources/js/pages/dashboard.vue": {
+    "file": "assets/dashboard-B9twuIZI.js",
+    "name": "dashboard",
+    "src": "resources/js/pages/dashboard.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.ts"
+    ],
+    "css": [
+      "assets/dashboard-v5pOJIDW.css"
     ]
   }
 }

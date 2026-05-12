@@ -41,6 +41,11 @@
 /* Reset & Base */
 * {
     box-sizing: border-box;
+    width: 100%;
+}
+
+img{
+    max-width: 100%;
 }
 
 body {
@@ -54,7 +59,7 @@ body {
 
 /* Top Bar */
 .top-bar {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -64,13 +69,13 @@ body {
     align-items: center;
     padding: 0 var(--space-lg);
     z-index: 100;
+    background: rgba(245, 247, 251, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .logout-button-top {
     background: var(--danger);
-}
-
-.logout-button-top {
     color: white;
     border: none;
     padding: var(--space-xs) var(--space-md);
@@ -86,15 +91,27 @@ body {
     opacity: 0.9;
 }
 
+.nav-button {
+    margin-right: var(--space-md);
+}
+
 
 /* Layout Principale */
 .dashboard-layout {
     max-width: var(--max-width);
     margin: 0 auto;
     padding: 0 var(--space-lg) var(--space-lg);
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    align-items: start;
+    gap: var(--space-lg);
+}
+
+.dashboard-main {
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
+    min-width: 0;
 }
 
 /* Cards */
@@ -159,13 +176,14 @@ p {
 }
 
 /* Liste Prenotazioni */
-ul {
+.booking-items,
+.grid-list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-li {
+.booking-item {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
@@ -177,14 +195,75 @@ li {
     transition: border-color 0.2s;
 }
 
-li:hover {
+.booking-item:hover {
     border-color: var(--accent);
 }
 
-li input[type="checkbox"] {
+.booking-item input[type="checkbox"] {
     transform: scale(1.4);
     margin-right: 20px;
     width: auto;
+}
+
+.scrollable-list {
+    max-height: 520px;
+    overflow: auto;
+    padding-right: 4px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding-bottom: var(--space-sm);
+    margin-bottom: var(--space-md);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.count-badge {
+    background: var(--ghost-bg);
+    color: var(--ghost-text-hover);
+    font-weight: 700;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.large-btn {
+    padding: 12px var(--space-md);
+}
+
+.alerts-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+
+.list-header {
+    padding: var(--space-lg) 0 var(--space-md);
+}
+
+.alert-success,
+.alert-error {
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    margin: 10px 0;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+
+.alert-success {
+    background: #e6fffa;
+    border-color: #b2f5ea;
+    color: #234e52;
+}
+
+.alert-error {
+    background: #fff5f5;
+    border-color: #fed7d7;
+    color: #742a2a;
 }
 
 /* Elementi Form */
@@ -293,6 +372,7 @@ summary {
 .btn-ghost {
     background: var(--ghost-bg);
     color: var(--ghost-text);
+    margin-right: var(--space-md);
     font-size: 12px;
 }
 
@@ -333,7 +413,11 @@ summary {
     transition: transform 0.2s ease;
 }
 
-.date-group{
+.summary-content {
+    width: 100%;
+}
+
+.date-group {
     background-color: var(--card);
     margin: var(--space-md);
 }
@@ -365,6 +449,113 @@ summary {
     flex: 1;
 }
 
+.status-info {
+    display: flex;
+    align-items: center;
+}
+
+/* Allinea input e bottone "X" sulla stessa riga */
+.orario-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    /* Spazio tra input e bottone */
+    margin-bottom: var(--space-xs);
+}
+
+/* Evita che l'input occupi il 100% forzando il bottone a capo */
+.orario-item input[type="time"] {
+    flex: 1;
+    /* L'input prende tutto lo spazio possibile, ma lascia il posto al bottone */
+    width: auto;
+    /* Sovrascrive il width: 100% generale se necessario */
+}
+
+/* Stilizzazione specifica per il bottone di rimozione (opzionale) */
+.remove-ora {
+    background: var(--danger-light);
+    color: var(--danger-dark);
+    padding: 0 var(--space-sm);
+    height: 38px;
+    /* Allinea l'altezza a quella dell'input */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    font-size: 18px;
+    width: auto;
+}
+
+.remove-ora:hover {
+    background: var(--danger);
+    color: white;
+}
+
+.date-management-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.summary-text {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.details-content {
+    padding-top: var(--space-sm);
+}
+
+.grid-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.grid-list .slot-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: #ffffff;
+    width: 100%;
+    min-width: 0;
+}
+
+.grid-list .slot-item strong {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.grid-list .slot-item .badge {
+    margin-left: 0;
+    flex-shrink: 0;
+}
+
+.grid-list .slot-item.is-booked {
+    opacity: 0.65;
+    background: #f8fafc;
+}
+
+.grid-list .slot-item input[type="checkbox"] {
+    transform: scale(1.2);
+}
+
+.slot-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-width: 0;
+    flex: 1;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .forms-row {
@@ -372,10 +563,21 @@ summary {
     }
 
     .top-bar {
-        position: relative;
-        justify-content: center;
-        padding: 10px;
+        position: sticky;
         height: auto;
+    }
+
+    .top-bar-inner {
+        max-width: 100%;
+        padding: 10px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .top-bar-inner button {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 14px;
     }
 
     body {
@@ -383,10 +585,72 @@ summary {
     }
 
     .dashboard-layout {
+        max-width: 100%;
+        margin: 0;
         padding: var(--space-md);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .booking-form-card,
+    .dashboard-main,
+    .booking-list {
+        width: 100%;
+    }
+
+    .alerts-container {
+        max-width: 100%;
+        margin: 0;
+        padding: 0 var(--space-md);
+    }
+
+    .booking-list {
+        padding: var(--space-lg);
+    }
+
+    .booking-form-card {
+        padding: var(--space-lg);
+    }
+
+    .scrollable-list {
+        max-height: 55vh;
     }
 
     .danger-zone-inline {
         grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 420px) {
+    .alerts-container {
+        padding: 0 14px;
+    }
+
+    .dashboard-layout {
+        padding: 14px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    .booking-item {
+        gap: 10px;
+        padding: 10px 12px;
+    }
+
+    .booking-item input[type="checkbox"] {
+        transform: scale(1.25);
+        margin-right: 10px;
+    }
+
+    .contact-info {
+        word-break: break-word;
+    }
+
+    .grid-list .slot-item strong {
+        white-space: normal;
     }
 }
